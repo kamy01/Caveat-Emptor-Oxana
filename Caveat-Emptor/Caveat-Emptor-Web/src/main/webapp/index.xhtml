@@ -16,21 +16,21 @@
 	<div class="login-wrap">
 		<div class="login-html">
 			<h:form id="loginForm" class="login-form">
-				<p:growl id="growl" showDetail="true" sticky="true" />
+				<p:growl id="growl" sticky="true" showDetail="true" />
 				<h:commandLink value="Sign In" class="tab active" />
 				<h:commandLink value="Sign Up" class="tab" />
 				<div class="sign-in-htm">
 					<div class="group">
 						<h:outputLabel for="username" value="User Name:" class="label" />
 						<p:inputText id="username" value="#{userLogin.username}"
-							required="true" class="input">
+							required="true" class="input" label="username">
 							<p:ajax event="blur" listener="#{userLogin.validateForm}" update="growl submitButton"  />
 						</p:inputText>
 					</div>
 					<div class="group">
 						<h:outputLabel for="pwd" value="Password:" class="label" />
 						<p:password id="pwd" value="#{userLogin.password}" required="true"
-							label="Password" class="input" />
+							label="pwd" class="input" />
 					</div>
 
 					<div class="group">

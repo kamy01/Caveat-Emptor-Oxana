@@ -16,7 +16,6 @@ import services.model.UserService;
 public class UserLogin implements Serializable {
 
 	private static final long serialVersionUID = 5443351151396868724L;
-	private String message = "Enter username and password";
 	private String username = null;
 	private String password = null;
 	private boolean loginEnabled = false; 
@@ -44,27 +43,21 @@ public class UserLogin implements Serializable {
 		return password;
 	}
 
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
 	public String login() {
-
+		
+		RequestContext context = RequestContext.getCurrentInstance();
+        FacesMessage message = null;
 		UserDto usrDto = usrService.getUser(username);
 
 		if (usrDto != null && password.equals(usrDto.getPassword())) {
-			message = "Successfully logged-in.";
+			 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", username);
 			return "templates/template";
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "The password is incorrect", "The password is incorrect"));
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
 			return "index";
 		}
 	}
