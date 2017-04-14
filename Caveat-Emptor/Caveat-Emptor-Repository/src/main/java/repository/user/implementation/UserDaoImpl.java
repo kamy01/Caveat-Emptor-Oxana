@@ -5,6 +5,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import entities.User;
 import model.UserDto;
@@ -15,39 +16,54 @@ import repository.user.UserDao;
 public class UserDaoImpl implements UserDao{
 
 	@PersistenceContext(unitName = "persistanceUnit")
-	private EntityManager em;
+	private EntityManager entityManager;
 
 	public UserDto findUserByEmail(String email) {
-
-		User user = (User) em.createNamedQuery("User.findByEmail").setParameter("email", email).getSingleResult();
-
-		UserDto userDto = createUserDto(user);
-		return userDto;
+		
+		Query userQuery = entityManager.createNamedQuery("User.findByEmail");
+		
+		userQuery.setParameter("email", email);
+		
+		User user = (User)userQuery.getSingleResult();
+		
+		return createUserDto(user);
+		
 	}
 
 	public UserDto findUserByUsername(String username) {
 		
 		try{
 			
-			return createUserDto( (User) em.createNamedQuery("User.findByUsername").setParameter("username", username).getSingleResult());
+			Query userQuery = entityManager.createNamedQuery("User.findByUsername");
+			
+			userQuery.setParameter("username", username);
+			
+			User user = (User)userQuery.getSingleResult();
+			
+			return createUserDto(user);
 			
 		}catch(NoResultException e){
+			
 			return null;
+			
 		}
 		
 	}
 
 	private UserDto createUserDto(User user) {
+		
 		UserDto userDto = new UserDto();
 
-		userDto.setUser_id(user.getUser_id());
-		userDto.setFirstname(user.getFirstname());
-		userDto.setLasname(user.getLastname());
-		userDto.setUsername(user.getUsername());
+		userDto.setUserId(user.getUserId());
+		userDto.setFirstName(user.getFirstName());
+		userDto.setLastName(user.getLastName());
+		userDto.setUserName(user.getUserName());
 		userDto.setEmail(user.getEmail());
 		userDto.setAdmin(user.isAdmin());
 		userDto.setConfirmationDate(user.getConfirmationDate());
 		userDto.setPassword(user.getPassword());
+		
 		return userDto;
+		
 	}
 }

@@ -7,7 +7,7 @@ public class UserDto implements Serializable {
 
 	private static final long serialVersionUID = 6204073745775254673L;
 
-	private int userId;
+	private Long userId;
 	private String firstName;
 	private String lastName;
 	private String userName;
@@ -17,11 +17,11 @@ public class UserDto implements Serializable {
 	private Date confirmationDate;
 
 	
-	public int getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
