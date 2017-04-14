@@ -1,6 +1,6 @@
-package repository.model;
+package repository.user;
 
-import persistence.UserDto;
+import model.UserDto;
 
 public interface UserDao {
 

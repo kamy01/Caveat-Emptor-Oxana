@@ -1,4 +1,4 @@
-package repository.persistance;
+package repository.user.implementation;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -7,12 +7,12 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import entities.User;
-import persistence.UserDto;
-import repository.model.UserDao;
+import model.UserDto;
+import repository.user.UserDao;
 
 @Stateless
 @Remote(UserDao.class)
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl implements UserDao{
 
 	@PersistenceContext(unitName = "persistanceUnit")
 	private EntityManager em;

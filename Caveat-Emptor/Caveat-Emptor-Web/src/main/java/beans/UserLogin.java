@@ -8,7 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import persistence.UserDto;
+import model.UserDto;
 import services.model.UserService;
 
 @ManagedBean(name = "userLogin")

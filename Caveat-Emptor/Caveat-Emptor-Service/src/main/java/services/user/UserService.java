@@ -1,6 +1,6 @@
 package services.user;
 
-import persistence.UserDto;
+import model.UserDto;
 
 public interface UserService {
 
