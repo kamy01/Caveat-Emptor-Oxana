@@ -17,6 +17,9 @@ import javax.persistence.Table;
 		@NamedQuery(name = "User.findByEmail", query = "SELECT user from User user WHERE user.email = :email"), })
 @Table(name = "users")
 public class User {
+	
+	public static final String FIND_USER_BY_USERNAME = "User.findByUsername";
+	public static final String FIND_USER_BY_EMAIL = "User.findByEmail";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -20,7 +20,7 @@ public class UserDaoImpl implements UserDao{
 
 	public UserDto findUserByEmail(String email) {
 		
-		Query userQuery = entityManager.createNamedQuery("User.findByEmail");
+		Query userQuery = entityManager.createNamedQuery(User.FIND_USER_BY_EMAIL);
 		
 		userQuery.setParameter("email", email);
 		
@@ -34,7 +34,7 @@ public class UserDaoImpl implements UserDao{
 		
 		try{
 			
-			Query userQuery = entityManager.createNamedQuery("User.findByUsername");
+			Query userQuery = entityManager.createNamedQuery(User.FIND_USER_BY_USERNAME);
 			
 			userQuery.setParameter("username", username);
 			
