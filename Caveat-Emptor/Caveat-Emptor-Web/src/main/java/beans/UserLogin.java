@@ -72,10 +72,6 @@ public class UserLogin implements Serializable {
 		}
 	}
 	
-	public void doSomething(){
-		
-	}
-	
 	public void validateForm(){
 		
 		if(!username.isEmpty())
