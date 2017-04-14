@@ -2,6 +2,7 @@ package beans;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -16,12 +17,18 @@ import services.user.UserService;
 public class UserLogin implements Serializable {
 
 	private static final long serialVersionUID = 5443351151396868724L;
-	private String username = null;
-	private String password = null;
-	private boolean loginEnabled = false; 
+	private String username;
+	private String password;
+	private boolean loginEnabled; 
 
 	@EJB
 	UserService userService;
+	
+	@PostConstruct
+	public void init(){
+		loginEnabled = false;
+	}
+	
 
 	public String getUsername() {
 		return username;
