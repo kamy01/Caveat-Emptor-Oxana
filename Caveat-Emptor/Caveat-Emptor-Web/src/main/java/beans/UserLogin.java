@@ -9,7 +9,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import model.UserDto;
-import services.model.UserService;
+import services.user.UserService;
 
 @ManagedBean(name = "userLogin")
 @ViewScoped
@@ -21,7 +21,7 @@ public class UserLogin implements Serializable {
 	private boolean loginEnabled = false; 
 
 	@EJB
-	UserService usrService;
+	UserService userService;
 
 	public String getUsername() {
 		return username;
@@ -49,16 +49,19 @@ public class UserLogin implements Serializable {
 
 	public String login() {
 		
-		RequestContext context = RequestContext.getCurrentInstance();
-        FacesMessage message = null;
-		UserDto usrDto = usrService.getUser(username);
+		FacesContext context = FacesContext.getCurrentInstance();
+		UserDto userDto = userService.getUser(username);
 
-		if (usrDto != null && password.equals(usrDto.getPassword())) {
-			 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", username);
+		if (userDto != null && password.equals(userDto.getPassword())) {
+			
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", username));
 			return "templates/template";
+			
 		} else {
-			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
+			
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials"));
 			return "index";
+			
 		}
 	}
 	

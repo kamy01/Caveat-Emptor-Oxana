@@ -7,45 +7,50 @@ public class UserDto implements Serializable {
 
 	private static final long serialVersionUID = 6204073745775254673L;
 
-	private int user_id;
-	private String firstname;
-	private String lasname;
-	private String username;
+	private int userId;
+	private String firstName;
+	private String lastName;
+	private String userName;
 	private String password;
 	private boolean admin;
 	private String email;
 	private Date confirmationDate;
 
-	public int getUser_id() {
-		return user_id;
+	
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
-	public String getFirstname() {
-		return firstname;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getLasname() {
-		return lasname;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setLasname(String lasname) {
-		this.lasname = lasname;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public String getPassword() {
