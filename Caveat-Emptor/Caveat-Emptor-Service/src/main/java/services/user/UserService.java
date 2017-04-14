@@ -1,4 +1,4 @@
-package services.model;
+package services.user;
 
 import persistence.UserDto;
 

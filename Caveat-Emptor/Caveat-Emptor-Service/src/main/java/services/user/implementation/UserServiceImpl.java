@@ -1,4 +1,4 @@
-package services;
+package services.user.implementation;
 
 import javax.ejb.EJB;
 import javax.ejb.Remote;
