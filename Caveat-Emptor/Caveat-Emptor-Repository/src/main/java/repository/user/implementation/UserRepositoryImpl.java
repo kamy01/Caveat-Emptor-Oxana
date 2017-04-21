@@ -7,10 +7,10 @@ import javax.persistence.Query;
 
 import entities.Register;
 import entities.Users;
-import repository.user.IUserDao;
+import repository.user.IUserRepository;
 
 @Stateless
-public class UserDaoImpl implements IUserDao {
+public class UserRepositoryImpl implements IUserRepository {
 
 	public Users findUserByEmail(String email, EntityManager entityManager) {
 

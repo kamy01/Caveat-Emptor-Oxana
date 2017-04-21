@@ -12,7 +12,7 @@ import constants.Constant;
 import entities.Register;
 import entities.Users;
 import model.UserDto;
-import repository.user.IUserDao;
+import repository.user.IUserRepository;
 import services.user.IRegisterService;
 import repository.user.Status;
 
@@ -23,7 +23,7 @@ public class RegisterServiceImpl implements IRegisterService {
 	private EntityManager _entityManager;
 
 	@EJB
-	IUserDao iUserDao;
+	IUserRepository iUserRepository;
 
 	public boolean isUserRegistered(UserDto userDto, String key) {
 
@@ -50,7 +50,7 @@ public class RegisterServiceImpl implements IRegisterService {
 
 	public Register findUserByKey(String key) {
 
-		return iUserDao.findUserByKeyValue(key, _entityManager);
+		return iUserRepository.findUserByKeyValue(key, _entityManager);
 
 	}
 

@@ -7,7 +7,7 @@ import javax.persistence.PersistenceContext;
 
 import entities.Users;
 import model.UserDto;
-import repository.user.IUserDao;
+import repository.user.IUserRepository;
 import services.common.Utils;
 import services.user.IUserService;
 
@@ -18,13 +18,13 @@ public class UserServiceImpl implements IUserService {
 	private EntityManager _entityManager;
 
 	@EJB
-	IUserDao iUserDao;
+	IUserRepository iUserRepository;
 
 	public UserDto getUserByUsername(String username) {
 
 		Utils util = new Utils();
 
-		Users user = iUserDao.findUserByUsername(username, _entityManager);
+		Users user = iUserRepository.findUserByUsername(username, _entityManager);
 		
 		if(user != null )
 			return util.createUserDto(user);
@@ -37,7 +37,7 @@ public class UserServiceImpl implements IUserService {
 
 		Utils util = new Utils();
 
-		Users user = iUserDao.findUserByEmail(email, _entityManager);
+		Users user = iUserRepository.findUserByEmail(email, _entityManager);
 
 		if(user != null )
 			return util.createUserDto(user);

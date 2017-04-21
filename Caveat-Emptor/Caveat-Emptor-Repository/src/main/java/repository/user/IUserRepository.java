@@ -7,7 +7,7 @@ import entities.Register;
 import entities.Users;
 
 @Remote
-public interface IUserDao {
+public interface IUserRepository {
 
 	public Users findUserByEmail(String email, EntityManager entityManager);
 	
