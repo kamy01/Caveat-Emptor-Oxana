@@ -1,22 +1,49 @@
 package services.user.implementation;
 
 import javax.ejb.EJB;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
+import entities.Users;
 import model.UserDto;
-import repository.user.UserDao;
-import services.user.UserService;
-
+import repository.user.IUserDao;
+import services.common.Utils;
+import services.user.IUserService;
 
 @Stateless
-@Remote(UserService.class)
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements IUserService {
+
+	@PersistenceContext(unitName = "persistanceUnit")
+	private EntityManager _entityManager;
 
 	@EJB
-	UserDao userDao;
+	IUserDao iUserDao;
 
-	public UserDto getUser(String username) {
-		return userDao.findUserByUsername(username);
+	public UserDto getUserByUsername(String username) {
+
+		Utils util = new Utils();
+
+		Users user = iUserDao.findUserByUsername(username, _entityManager);
+		
+		if(user != null )
+			return util.createUserDto(user);
+		
+		return null;
+
 	}
+
+	public UserDto getUserByEmail(String email) {
+
+		Utils util = new Utils();
+
+		Users user = iUserDao.findUserByEmail(email, _entityManager);
+
+		if(user != null )
+			return util.createUserDto(user);
+		
+		return null;
+
+	}
+
 }

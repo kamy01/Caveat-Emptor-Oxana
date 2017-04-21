@@ -9,26 +9,28 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import constants.Constant;
 import model.UserDto;
-import services.user.UserService;
+import repository.user.Status;
+import services.user.IUserService;
 
 @ManagedBean(name = "userLogin")
 @ViewScoped
 public class UserLogin implements Serializable {
 
 	private static final long serialVersionUID = 5443351151396868724L;
+
 	private String username;
 	private String password;
-	private boolean loginEnabled; 
+	private boolean isLoginEnabled;
 
 	@EJB
-	UserService userService;
-	
+	IUserService userService;
+
 	@PostConstruct
-	public void init(){
-		loginEnabled = false;
+	public void init() {
+		isLoginEnabled = false;
 	}
-	
 
 	public String getUsername() {
 		return username;
@@ -39,11 +41,11 @@ public class UserLogin implements Serializable {
 	}
 
 	public boolean isLoginEnabled() {
-		return loginEnabled;
+		return isLoginEnabled;
 	}
 
 	public void setLoginEnabled(boolean loginEnabled) {
-		this.loginEnabled = loginEnabled;
+		this.isLoginEnabled = loginEnabled;
 	}
 
 	public String getPassword() {
@@ -55,28 +57,33 @@ public class UserLogin implements Serializable {
 	}
 
 	public String login() {
-		
-		FacesContext context = FacesContext.getCurrentInstance();
-		UserDto userDto = userService.getUser(username);
 
-		if (userDto != null && password.equals(userDto.getPassword())) {
-			
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", username));
-			return "templates/template";
-			
+		FacesContext context = FacesContext.getCurrentInstance();
+		UserDto userDto = userService.getUserByUsername(username);
+
+		if (userDto != null && userDto.getStatus().equals(Status.PENDING.getValue())) {
+
+			return "pages/" + Constant.REGISTERED_SUCCESS_PAGE + "?faces-redirect=true";
+
+		} else if (userDto != null && password.equals(userDto.getPassword())) {
+
+			return Constant.CAVEAT_EMPTOR_PAGE + "?faces-redirect=true";
+
 		} else {
-			
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials"));
-			return "index";
-			
+
+			context.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, Constant.LOGIN_ERROR, Constant.INVALID_CREDENTIALS));
+
+			return Constant.HOME_PAGE + "?faces-redirect=true";
+
 		}
 	}
-	
-	public void validateForm(){
-		
-		if(!username.isEmpty())
-			loginEnabled = true;
-		
+
+	public void validateForm() {
+
+		if (!username.isEmpty())
+			isLoginEnabled = true;
+
 	}
 
 }

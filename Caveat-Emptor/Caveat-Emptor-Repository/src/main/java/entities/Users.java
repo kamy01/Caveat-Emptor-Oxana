@@ -1,6 +1,6 @@
 package entities;
 
-import java.util.Date;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,33 +13,42 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "User.findByUsername", query = "SELECT user from User user WHERE user.username = :username"),
-		@NamedQuery(name = "User.findByEmail", query = "SELECT user from User user WHERE user.email = :email"), })
+		@NamedQuery(name = "Users.findByUsername", query = "SELECT user from Users user WHERE user.userName = :username"),
+		@NamedQuery(name = "Users.findByEmail", query = "SELECT user from Users user WHERE user.email = :email"), })
 @Table(name = "users")
-public class User {
+public class Users implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	
-	public static final String FIND_USER_BY_USERNAME = "User.findByUsername";
-	public static final String FIND_USER_BY_EMAIL = "User.findByEmail";
+	public static final String FIND_USER_BY_USERNAME = "Users.findByUsername";
+	public static final String FIND_USER_BY_EMAIL = "Users.findByEmail";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="USER_ID", nullable=false)
-	private Long userId;
-	@Column(name="FIRSTNAME", nullable=false)
-	private String firstName;
-	@Column(name="LASTNAME", nullable=false)
-	private String lastName;
-	@Column(name="USERNAME", nullable=false)
-	private String userName;
-	@Column(name="PASSWORD", nullable=false)
-	private String password;
-	@Column(name="EMAIL", nullable=false)
-	private String email;
-	@Column(name="ADMIN", nullable=false)
-	private boolean admin;
+	@Column(name = "USER_ID", nullable = false)
+	private Long ID;
 
-	@Column(name = "CONFIRMATION_DATE")
-	private Date confirmationDate;
+	@Column(name = "FIRSTNAME", nullable = false)
+	private String firstName;
+
+	@Column(name = "LASTNAME", nullable = false)
+	private String lastName;
+
+	@Column(name = "USERNAME", nullable = false)
+	private String userName;
+
+	private String password;
+	private String email;
+	private boolean admin;
+	private String status;
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	public String getEmail() {
 		return email;
@@ -50,11 +59,11 @@ public class User {
 	}
 
 	public Long getUserId() {
-		return userId;
+		return ID;
 	}
 
 	public void setUserId(Long userId) {
-		this.userId = userId;
+		this.ID = userId;
 	}
 
 	public String getFirstName() {
@@ -95,14 +104,6 @@ public class User {
 
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
-	}
-
-	public Date getConfirmationDate() {
-		return confirmationDate;
-	}
-
-	public void setConfirmationDate(Date confirmationDate) {
-		this.confirmationDate = confirmationDate;
 	}
 
 }

@@ -1,69 +1,87 @@
 package repository.user.implementation;
 
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import entities.User;
-import model.UserDto;
-import repository.user.UserDao;
+import entities.Register;
+import entities.Users;
+import repository.user.IUserDao;
 
 @Stateless
-@Remote(UserDao.class)
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl implements IUserDao {
 
-	@PersistenceContext(unitName = "persistanceUnit")
-	private EntityManager entityManager;
+	public Users findUserByEmail(String email, EntityManager entityManager) {
 
-	public UserDto findUserByEmail(String email) {
-		
-		Query userQuery = entityManager.createNamedQuery(User.FIND_USER_BY_EMAIL);
-		
-		userQuery.setParameter("email", email);
-		
-		User user = (User)userQuery.getSingleResult();
-		
-		return createUserDto(user);
-		
-	}
+		try {
 
-	public UserDto findUserByUsername(String username) {
-		
-		try{
-			
-			Query userQuery = entityManager.createNamedQuery(User.FIND_USER_BY_USERNAME);
-			
-			userQuery.setParameter("username", username);
-			
-			User user = (User)userQuery.getSingleResult();
-			
-			return createUserDto(user);
-			
-		}catch(NoResultException e){
-			
+			Query userQuery = entityManager.createNamedQuery(Users.FIND_USER_BY_EMAIL);
+
+			userQuery.setParameter("email", email);
+
+			return (Users) userQuery.getSingleResult();
+
+		} catch (NoResultException e) {
+
 			return null;
-			
+
 		}
-		
+
 	}
 
-	private UserDto createUserDto(User user) {
-		
-		UserDto userDto = new UserDto();
+	public Users findUserByUsername(String username, EntityManager entityManager) {
 
-		userDto.setUserId(user.getUserId());
-		userDto.setFirstName(user.getFirstName());
-		userDto.setLastName(user.getLastName());
-		userDto.setUserName(user.getUserName());
-		userDto.setEmail(user.getEmail());
-		userDto.setAdmin(user.isAdmin());
-		userDto.setConfirmationDate(user.getConfirmationDate());
-		userDto.setPassword(user.getPassword());
-		
-		return userDto;
-		
+		try {
+
+			Query userQuery = entityManager.createNamedQuery(Users.FIND_USER_BY_USERNAME);
+
+			userQuery.setParameter("username", username);
+
+			return (Users) userQuery.getSingleResult();
+
+		} catch (NoResultException e) {
+
+			return null;
+
+		}
+
 	}
+
+	public Register findUserRegisterByUserId(Long id, EntityManager entityManager) {
+
+		try {
+
+			Query registerQuery = entityManager.createNamedQuery(Register.FIND_USER_REGISER_BY_USER_ID);
+
+			registerQuery.setParameter("userId", id);
+
+			return (Register) registerQuery.getSingleResult();
+
+		} catch (NoResultException e) {
+
+			return null;
+
+		}
+
+	}
+
+	public Register findUserByKeyValue(String key, EntityManager entityManager) {
+
+		try {
+
+			Query registerQuery = entityManager.createNamedQuery(Register.FIND_USER_REGISER_BY_KEY_VALUE);
+			
+			registerQuery.setParameter("key", key);
+
+			return (Register) registerQuery.getSingleResult();
+
+		} catch (NoResultException e) {
+
+			return null;
+
+		}
+
+	}
+
 }

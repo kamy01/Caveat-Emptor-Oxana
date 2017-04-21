@@ -15,16 +15,17 @@
 <h:body>
 	<div class="login-wrap">
 		<div class="login-html">
+			<h:outputLink class="tab active" value="index.xhtml">Sign In</h:outputLink>
+			<h:outputLink class="tab" value="pages/register.xhtml">Sign Up</h:outputLink>
 			<h:form id="loginForm" class="login-form">
-				<p:growl id="growl" sticky="true" showDetail="true" />
-				<h:commandLink value="Sign In" class="tab active" />
-				<h:commandLink value="Sign Up" class="tab" />
+				<p:growl id="growl" sticky="false" showDetail="true" />
 				<div class="sign-in-htm">
 					<div class="group">
 						<h:outputLabel for="username" value="User Name:" class="label" />
 						<p:inputText id="username" value="#{userLogin.username}"
 							required="true" class="input" label="username">
-							<p:ajax event="blur" listener="#{userLogin.validateForm}" update="growl submitButton"  />
+							<p:ajax event="blur" listener="#{userLogin.validateForm}"
+								update="growl submitButton" />
 						</p:inputText>
 					</div>
 					<div class="group">
@@ -34,8 +35,9 @@
 					</div>
 
 					<div class="group">
-						<p:commandButton value="Login" action="#{userLogin.login()}" id="submitButton"
-							update="loginForm" class="button" disabled="#{!userLogin.loginEnabled}" />
+						<p:commandButton value="Login" action="#{userLogin.login()}"
+							id="submitButton" update="loginForm" class="button"
+							disabled="#{!userLogin.loginEnabled}" />
 					</div>
 					<div class="hr"></div>
 					<div class="foot-lnk">

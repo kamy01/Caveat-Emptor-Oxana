@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link href="../resources/css/style.css" rel='stylesheet'
+		type='text/css' />
+	<script src="../resources/js/validation.js" type="text/javascript"></script>
+	<title>Register</title>
+</h:head>
+<h:body>
+	<div class="login-wrap">
+		<div class="login-html">
+			<h:outputLink class="tab" value="../home.xhtml">Sign In</h:outputLink>
+			<h:outputLink class="tab active" value="pages/register.xhtml">Sign Up</h:outputLink>
+			<h:form id="registerForm" class="login-form register-form">
+				<p:growl id="growl" sticky="false" showDetail="true" />
+				<div class="sign-in-htm">
+					<div class="group">
+						<h:outputLabel for="firstname" value="First Name:" class="label" />
+						<p:inputText id="firstname" value="#{userRegister.firstName}"
+							required="true" class="input" label="firstname">
+							<p:ajax event="blur" listener="#{userRegister.validateForm}"
+								update="growl" />
+						</p:inputText>
+					</div>
+					<div class="group">
+						<h:outputLabel for="lastname" value="Last Name:" class="label" />
+						<p:inputText id="lastname" value="#{userRegister.lastName}"
+							required="true" class="input" label="lastname">
+
+						</p:inputText>
+					</div>
+					<div class="group">
+						<h:outputLabel for="email" value="Email Address:" class="label" />
+						<p:inputText id="email" value="#{userRegister.email}"
+							required="true" class="input" label="email"
+							validatorMessage="Invalid email.">
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+							<p:ajax event="blur"
+								listener="#{userRegister.checkExistingEmail}" update="growl" />
+						</p:inputText>
+					</div>
+					<div class="group">
+						<h:outputLabel for="username" value="Username:" class="label" />
+						<p:inputText id="username" value="#{userRegister.username}"
+							required="true" class="input" label="username">
+							<p:ajax event="blur"
+								listener="#{userRegister.checkExistingUsername}" update="growl" />
+						</p:inputText>
+					</div>
+					<div class="group">
+						<h:outputLabel for="pwd" value="Password:" class="label" />
+						<p:password id="pwd" value="#{userRegister.password}"
+							required="true" label="pwd" class="input" match="pwd_confirm" />
+					</div>
+					<div class="group">
+						<h:outputLabel for="pwd_confirm" value="Confirm Password:"
+							class="label" />
+						<p:password id="pwd_confirm" value="#{userRegister.password}"
+							required="true" label="pwd_confirm" class="input" />
+					</div>
+
+					<div class="group">
+						<p:commandButton value="Register"
+							action="#{userRegister.register}" id="submitButton"
+							update="registerForm growl" class="button" />
+					</div>
+				</div>
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>

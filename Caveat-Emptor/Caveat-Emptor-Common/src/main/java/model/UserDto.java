@@ -1,52 +1,59 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class UserDto implements Serializable {
 
 	private static final long serialVersionUID = 6204073745775254673L;
 
-	private Long userId;
-	private String firstName;
-	private String lastName;
-	private String userName;
-	private String password;
-	private boolean admin;
-	private String email;
-	private Date confirmationDate;
+	private Long _ID;
+	private String _firstName;
+	private String _lastName;
+	private String _userName;
+	private String _password;
+	private String _email;
+	private String _status;
+	private boolean _isAdmin;
 
 	
+	public String getStatus() {
+		return _status;
+	}
+
+	public void setStatus(String status) {
+		this._status = status;
+	}
+
 	public Long getUserId() {
-		return userId;
+		return _ID;
 	}
 
 	public void setUserId(Long userId) {
-		this.userId = userId;
+		this._ID = userId;
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return _firstName;
 	}
 
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		this._firstName = firstName;
 	}
 
 	public String getLastName() {
-		return lastName;
+		return _lastName;
 	}
 
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this._lastName = lastName;
 	}
 
 	public String getUserName() {
-		return userName;
+		return _userName;
 	}
 
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this._userName = userName;
 	}
 
 	public static long getSerialversionuid() {
@@ -54,35 +61,27 @@ public class UserDto implements Serializable {
 	}
 
 	public String getPassword() {
-		return password;
+		return _password;
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this._password = password;
 	}
 
 	public boolean isAdmin() {
-		return admin;
+		return _isAdmin;
 	}
 
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
+	public void setAdmin(boolean _isAdmin) {
+		this._isAdmin = _isAdmin;
 	}
 
 	public String getEmail() {
-		return email;
+		return _email;
 	}
 
 	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Date getConfirmationDate() {
-		return confirmationDate;
-	}
-
-	public void setConfirmationDate(Date confirmationDate) {
-		this.confirmationDate = confirmationDate;
+		this._email = email;
 	}
 
 }
