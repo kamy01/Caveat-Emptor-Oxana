@@ -4,20 +4,20 @@ import java.sql.Timestamp;
 
 public class RegisterDto {
 
-	private Long _registerId;
-	private Timestamp _confirmationDate;
+	private Long Id;
+	private Timestamp confirmationDate;
 	
 	public Long getRegisterId() {
-		return _registerId;
+		return Id;
 	}
 	public void setRegisterId(Long registerId) {
-		this._registerId = registerId;
+		this.Id = registerId;
 	}
 	public Timestamp getConfirmationDate() {
-		return _confirmationDate;
+		return confirmationDate;
 	}
 	public void setConfirmationDate(Timestamp confirmationDate) {
-		this._confirmationDate = confirmationDate;
+		this.confirmationDate = confirmationDate;
 	}
 	
 }

@@ -6,54 +6,54 @@ public class UserDto implements Serializable {
 
 	private static final long serialVersionUID = 6204073745775254673L;
 
-	private Long _ID;
-	private String _firstName;
-	private String _lastName;
-	private String _userName;
-	private String _password;
-	private String _email;
-	private String _status;
-	private boolean _isAdmin;
+	private Long Id;
+	private String firstName;
+	private String lastName;
+	private String userName;
+	private String password;
+	private String email;
+	private String status;
+	private boolean isAdmin;
 
 	
 	public String getStatus() {
-		return _status;
+		return status;
 	}
 
 	public void setStatus(String status) {
-		this._status = status;
+		this.status = status;
 	}
 
 	public Long getUserId() {
-		return _ID;
+		return Id;
 	}
 
 	public void setUserId(Long userId) {
-		this._ID = userId;
+		this.Id = userId;
 	}
 
 	public String getFirstName() {
-		return _firstName;
+		return firstName;
 	}
 
 	public void setFirstName(String firstName) {
-		this._firstName = firstName;
+		this.firstName = firstName;
 	}
 
 	public String getLastName() {
-		return _lastName;
+		return lastName;
 	}
 
 	public void setLastName(String lastName) {
-		this._lastName = lastName;
+		this.lastName = lastName;
 	}
 
 	public String getUserName() {
-		return _userName;
+		return userName;
 	}
 
 	public void setUserName(String userName) {
-		this._userName = userName;
+		this.userName = userName;
 	}
 
 	public static long getSerialversionuid() {
@@ -61,27 +61,27 @@ public class UserDto implements Serializable {
 	}
 
 	public String getPassword() {
-		return _password;
+		return password;
 	}
 
 	public void setPassword(String password) {
-		this._password = password;
+		this.password = password;
 	}
 
 	public boolean isAdmin() {
-		return _isAdmin;
+		return isAdmin;
 	}
 
-	public void setAdmin(boolean _isAdmin) {
-		this._isAdmin = _isAdmin;
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 
 	public String getEmail() {
-		return _email;
+		return email;
 	}
 
 	public void setEmail(String email) {
-		this._email = email;
+		this.email = email;
 	}
 
 }
