@@ -15,7 +15,7 @@ import services.user.IUserService;
 public class UserServiceImpl implements IUserService {
 
 	@PersistenceContext(unitName = "persistanceUnit")
-	private EntityManager _entityManager;
+	private EntityManager entityManager;
 
 	@EJB
 	IUserRepository iUserRepository;
@@ -24,7 +24,7 @@ public class UserServiceImpl implements IUserService {
 
 		Utils util = new Utils();
 
-		Users user = iUserRepository.findUserByUsername(username, _entityManager);
+		Users user = iUserRepository.findUserByUsername(username, entityManager);
 		
 		if(user != null )
 			return util.createUserDto(user);
@@ -37,7 +37,7 @@ public class UserServiceImpl implements IUserService {
 
 		Utils util = new Utils();
 
-		Users user = iUserRepository.findUserByEmail(email, _entityManager);
+		Users user = iUserRepository.findUserByEmail(email, entityManager);
 
 		if(user != null )
 			return util.createUserDto(user);

@@ -20,7 +20,7 @@ import repository.user.AccountStatus;
 public class RegisterServiceImpl implements IRegisterService {
 
 	@PersistenceContext(unitName = "persistanceUnit")
-	private EntityManager _entityManager;
+	private EntityManager entityManager;
 
 	@EJB
 	IUserRepository iUserRepository;
@@ -36,7 +36,7 @@ public class RegisterServiceImpl implements IRegisterService {
 
 		try{
 			
-			_entityManager.persist(register);
+			entityManager.persist(register);
 			
 			return true;
 			
@@ -50,25 +50,25 @@ public class RegisterServiceImpl implements IRegisterService {
 
 	public Register findUserByKey(String key) {
 
-		return iUserRepository.findUserByKeyValue(key, _entityManager);
+		return iUserRepository.findUserByKeyValue(key, entityManager);
 
 	}
 
 	public void deleteRowFromRegisterTable(Register register) {
 
-		_entityManager.remove(register);
+		entityManager.remove(register);
 
 	}
 
 	public void updateUserStatus(Users user) {
 
-		_entityManager.merge(user);
+		entityManager.merge(user);
 
 	}
 
 	public void deleteConfirmedRegistration(Register register) {
 
-		Register registerToDelete = _entityManager.getReference(Register.class, register.getRegisterId());
+		Register registerToDelete = entityManager.getReference(Register.class, register.getRegisterId());
 
 		if (registerToDelete != null) {
 
