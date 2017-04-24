@@ -68,7 +68,7 @@ public class RegisterServiceImpl implements IRegisterService {
 
 	public void deleteConfirmedRegistration(Register register) {
 
-		Register registerToDelete = entityManager.getReference(Register.class, register.getRegisterId());
+		Register registerToDelete = entityManager.getReference(Register.class, register.getId());
 
 		if (registerToDelete != null) {
 

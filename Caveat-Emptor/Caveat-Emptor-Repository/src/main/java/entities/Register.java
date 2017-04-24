@@ -17,7 +17,7 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "Register.findByUserId", query = "SELECT user from Register user WHERE user.ID = :userId"),
+		@NamedQuery(name = "Register.findByUserId", query = "SELECT user from Register user WHERE user.id = :userId"),
 		@NamedQuery(name = "Register.findByKeyValue", query = "SELECT user from Register user WHERE user.key = :key"),})
 @Table(name = "register")
 public class Register implements Serializable {
@@ -29,8 +29,7 @@ public class Register implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "REGISTER_ID")
-	private Long ID;
+	private Long id;
 
 	@Column(name = "CONFIRMATION_DATE")
 	private Timestamp confirmationDate;
@@ -50,12 +49,12 @@ public class Register implements Serializable {
 		this.key = key;
 	}
 
-	public Long getRegisterId() {
-		return ID;
+	public Long getId() {
+		return id;
 	}
 
-	public void setRegisterId(Long registerId) {
-		this.ID = registerId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Timestamp getConfirmationDate() {

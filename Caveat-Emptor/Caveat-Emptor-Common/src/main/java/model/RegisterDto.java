@@ -4,14 +4,14 @@ import java.sql.Timestamp;
 
 public class RegisterDto {
 
-	private Long Id;
+	private Long id;
 	private Timestamp confirmationDate;
 	
-	public Long getRegisterId() {
-		return Id;
+	public Long getId() {
+		return id;
 	}
-	public void setRegisterId(Long registerId) {
-		this.Id = registerId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public Timestamp getConfirmationDate() {
 		return confirmationDate;

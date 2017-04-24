@@ -12,7 +12,7 @@ public class Utils {
 
 		UserDto userDto = new UserDto();
 
-		userDto.setUserId(user.getUserId());
+		userDto.setId(user.getId());
 		userDto.setFirstName(user.getFirstName());
 		userDto.setLastName(user.getLastName());
 		userDto.setUserName(user.getUserName());
