@@ -25,6 +25,7 @@ public class Users implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
 	private Long id;
 
 	@Column(name = "FIRSTNAME", nullable = false)
@@ -36,9 +37,16 @@ public class Users implements Serializable{
 	@Column(name = "USERNAME", nullable = false)
 	private String userName;
 
+	@Column(name = "PASSWORD")
 	private String password;
+	
+	@Column(name = "EMAIL")
 	private String email;
+	
+	@Column(name = "ADMIN")
 	private boolean admin;
+	
+	@Column(name = "ATATUS")
 	private String status;
 
 	public String getStatus() {

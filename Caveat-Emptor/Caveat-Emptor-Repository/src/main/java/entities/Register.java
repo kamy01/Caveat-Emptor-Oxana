@@ -29,6 +29,7 @@ public class Register implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
 	private Long id;
 
 	@Column(name = "CONFIRMATION_DATE")
