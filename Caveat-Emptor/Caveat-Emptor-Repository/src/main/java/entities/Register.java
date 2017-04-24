@@ -59,7 +59,7 @@ public class Register implements Serializable {
 	}
 
 	public Timestamp getConfirmationDate() {
-		return confirmationDate;
+		return (Timestamp)confirmationDate.clone();
 	}
 
 	public void setConfirmationDate(Timestamp confirmationDate) {
