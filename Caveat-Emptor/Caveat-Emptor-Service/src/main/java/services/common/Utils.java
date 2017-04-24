@@ -4,7 +4,7 @@ package services.common;
 
 import entities.Users;
 import model.UserDto;
-import repository.user.Status;
+import repository.user.AccountStatus;
 
 public class Utils {
 	
@@ -35,7 +35,7 @@ public class Utils {
 		userDto.setLastName(lastName);
 		userDto.setUserName(userName);
 		userDto.setPassword(password);
-		userDto.setStatus(Status.PENDING.getValue());
+		userDto.setStatus(AccountStatus.PENDING.getValue());
 		
 		return userDto;
 	}

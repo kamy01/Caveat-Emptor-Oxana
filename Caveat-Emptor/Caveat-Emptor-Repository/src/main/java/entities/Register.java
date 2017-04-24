@@ -22,7 +22,8 @@ import javax.persistence.Table;
 @Table(name = "register")
 public class Register implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5579189702475104527L;
+	
 	public static final String FIND_USER_REGISER_BY_USER_ID = "Register.findByUserId";
 	public static final String FIND_USER_REGISER_BY_KEY_VALUE = "Register.findByKeyValue";
 

@@ -11,7 +11,7 @@ import javax.faces.context.FacesContext;
 
 import constants.Constant;
 import model.UserDto;
-import repository.user.Status;
+import repository.user.AccountStatus;
 import services.user.IUserService;
 
 @ManagedBean(name = "userLogin")
@@ -61,7 +61,7 @@ public class UserLogin implements Serializable {
 		FacesContext context = FacesContext.getCurrentInstance();
 		UserDto userDto = userService.getUserByUsername(username);
 
-		if (userDto != null && userDto.getStatus().equals(Status.PENDING.getValue())) {
+		if (userDto != null && userDto.getStatus().equals(AccountStatus.PENDING.getValue())) {
 
 			return "pages/" + Constant.REGISTERED_SUCCESS_PAGE + "?faces-redirect=true";
 

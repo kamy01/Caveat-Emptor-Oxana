@@ -14,7 +14,7 @@ import entities.Users;
 import model.UserDto;
 import repository.user.IUserRepository;
 import services.user.IRegisterService;
-import repository.user.Status;
+import repository.user.AccountStatus;
 
 @Stateless
 public class RegisterServiceImpl implements IRegisterService {
@@ -85,7 +85,7 @@ public class RegisterServiceImpl implements IRegisterService {
 
 			if (register != null) {
 
-				register.getUser().setStatus(Status.ACTIVE.getValue());
+				register.getUser().setStatus(AccountStatus.ACTIVE.getValue());
 
 				updateUserStatus(register.getUser());
 

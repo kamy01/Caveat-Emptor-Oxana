@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name = "users")
 public class Users implements Serializable{
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -1081477993726958418L;
 	
 	public static final String FIND_USER_BY_USERNAME = "Users.findByUsername";
 	public static final String FIND_USER_BY_EMAIL = "Users.findByEmail";

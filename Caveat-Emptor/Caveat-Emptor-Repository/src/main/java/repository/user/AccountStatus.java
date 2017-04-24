@@ -1,13 +1,12 @@
 package repository.user;
 
-public enum Status {
+public enum AccountStatus {
 	ACTIVE("active"),
-	INACTIVE("inactive"),
 	PENDING("pending");
 	
 	private final String value;
 	
-	private Status(String value){
+	private AccountStatus(String value){
 		this.value = value;
 	}
 	

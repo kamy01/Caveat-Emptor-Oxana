@@ -8,8 +8,6 @@
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
-	<link href='./resources/css/style.css' rel='stylesheet'
-		type='text/css' />
 </h:head>
 
 <h:body>
@@ -19,6 +17,12 @@
 		</ui:insert>
 	</div>
 	<br />
+	<div>
+		<ui:insert name="tree">
+			<ui:include src="tree.xhtml" />
+		</ui:insert>
+	</div>
+	<br/>
 	<div>
 		<ui:insert name="body">
 			<ui:include src="content.xhtml" />
