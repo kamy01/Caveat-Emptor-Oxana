@@ -22,28 +22,13 @@ public class SendEmailService {
 
 		Properties properties = getProperties();
 
-		String to = user.getEmail();
-
-		Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(properties.getProperty("username"),
-						properties.getProperty("password"));
-			}
-		});
+		Session session = createSession(properties);
 
 		try {
 
 			String key = UUID.randomUUID().toString();
-			String link = Constant.MAIL_REGISTRATION_SITE_LINK + "?scope=activation"+ "&key=" + key;
-
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(properties.getProperty("username")));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-			message.setSubject("Account activation");
-			message.setText(Constant.HELLO_MSG + ", " + user.getFirstName() + " " + user.getLastName() + ","
-					+ Constant.NEW_LINE + Constant.MAIL_SUBJECT + Constant.NEW_LINE
-					+ link
-					+ Constant.NEW_LINE + Constant.MAIL_SENDER);
+			
+			Message message = buildMessage(session, properties, user, key);
 
 			try {
 				
@@ -53,7 +38,6 @@ public class SendEmailService {
 				
 			} catch (Exception e) {
 				
-				e.printStackTrace();
 				return null;
 				
 			}
@@ -65,6 +49,35 @@ public class SendEmailService {
 		}
 		
 		return null;
+	}
+	
+	private static Message buildMessage(Session session, Properties properties, UserDto user, String key) throws MessagingException{
+		
+		
+		String link = Constant.MAIL_REGISTRATION_SITE_LINK + "?scope=activation"+ "&key=" + key;
+		
+		Message message = new MimeMessage(session);
+		
+		message.setFrom(new InternetAddress(properties.getProperty("username")));
+		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
+		message.setSubject("Account activation");
+		message.setText(Constant.HELLO_MSG + ", " + user.getFirstName() + " " + user.getLastName() + ","
+				+ Constant.NEW_LINE + Constant.MAIL_SUBJECT + Constant.NEW_LINE
+				+ link
+				+ Constant.NEW_LINE + Constant.MAIL_SENDER);
+		
+		return message;
+	}
+	
+	private static Session createSession(Properties properties){
+		
+		return Session.getInstance(properties, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(properties.getProperty("username"),
+						properties.getProperty("password"));
+			}
+		});
+		
 	}
 
 	private static Properties getProperties() {
