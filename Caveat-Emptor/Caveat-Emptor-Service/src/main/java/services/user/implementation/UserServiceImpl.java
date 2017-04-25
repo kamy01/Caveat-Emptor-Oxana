@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import entities.Users;
+import exception.AccountException;
 import model.UserDto;
 import repository.user.IUserRepository;
 import services.common.Utils;
@@ -20,29 +21,18 @@ public class UserServiceImpl implements IUserService {
 	@EJB
 	IUserRepository iUserRepository;
 
-	public UserDto getUserByUsername(String username) {
+	public UserDto getUserByUsername(String username) throws AccountException {
 
-		Utils util = new Utils();
+			Users user = iUserRepository.findUserByUsername(username, entityManager);
 
-		Users user = iUserRepository.findUserByUsername(username, entityManager);
-		
-		if(user != null )
-			return util.createUserDto(user);
-		
-		return null;
+			return Utils.createUserDto(user);
 
 	}
 
-	public UserDto getUserByEmail(String email) {
+	public UserDto getUserByEmail(String email) throws AccountException{
 
-		Utils util = new Utils();
-
-		Users user = iUserRepository.findUserByEmail(email, entityManager);
-
-		if(user != null )
-			return util.createUserDto(user);
-		
-		return null;
+			Users user = iUserRepository.findUserByEmail(email, entityManager);
+			return Utils.createUserDto(user);
 
 	}
 

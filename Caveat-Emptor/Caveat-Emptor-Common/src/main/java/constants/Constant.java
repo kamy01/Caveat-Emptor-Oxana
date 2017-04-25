@@ -9,6 +9,8 @@ public final class Constant {
 	public static final String USERNAME_EXISTS = "Username already exists!";
 	public static final String EMAIL_EXISTS = "Email already exists!";
 	public static final String INVALID_CREDENTIALS = "Invalid credentials";
+	public static final String ALREADY_REGISTERED = "Already registerede";
+	public static final String NO_SUCH_USER = "No such user";
 	public static final String MAIL_SUBJECT = "We are glad you have registered to Caveat Emptor. \n\n Please, activate your account by clicking this link:";
 	public static final String MAIL_SENDER = "Best regards. \n\n The Caveat Emptor team.";
 	

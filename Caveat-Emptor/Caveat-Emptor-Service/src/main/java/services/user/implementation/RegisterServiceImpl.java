@@ -11,6 +11,7 @@ import javax.persistence.PersistenceException;
 import constants.Constant;
 import entities.Register;
 import entities.Users;
+import exception.AccountException;
 import model.UserDto;
 import repository.user.IUserRepository;
 import services.user.IRegisterService;
@@ -25,7 +26,7 @@ public class RegisterServiceImpl implements IRegisterService {
 	@EJB
 	IUserRepository iUserRepository;
 
-	public boolean isUserRegistered(UserDto userDto, String key) {
+	public void registerNewUser(UserDto userDto, String key) throws AccountException {
 
 		Users user = populateUserObject(userDto);
 		Register register = new Register();
@@ -34,21 +35,19 @@ public class RegisterServiceImpl implements IRegisterService {
 		register.setKey(key);
 		register.setUser(user);
 
-		try{
+		try {
 			
 			entityManager.persist(register);
 			
-			return true;
-			
 		} catch (PersistenceException e) {
-
-			return false;
-
+			
+			throw new AccountException();
+			
 		}
 
 	}
 
-	public Register findUserByKey(String key) {
+	public Register findUserByKey(String key) throws AccountException {
 
 		return iUserRepository.findUserByKeyValue(key, entityManager);
 
@@ -77,31 +76,18 @@ public class RegisterServiceImpl implements IRegisterService {
 
 	}
 
-	public boolean isAccountActive(String key) {
+	public void activateAccount(String key) throws AccountException {
 
-		try {
+		Register register = findUserByKey(key);
 
-			Register register = findUserByKey(key);
+		if (register != null) {
 
-			if (register != null) {
+			register.getUser().setStatus(AccountStatus.ACTIVE.getValue());
 
-				register.getUser().setStatus(AccountStatus.ACTIVE.getValue());
+			updateUserStatus(register.getUser());
 
-				updateUserStatus(register.getUser());
-
-				deleteConfirmedRegistration(register);
-
-				return true;
-			}
-
-		} catch (PersistenceException e) {
-
-			return false;
-
+			deleteConfirmedRegistration(register);
 		}
-
-		return false;
-
 	}
 
 	private Timestamp getCurrentDatePlusOneDay() {

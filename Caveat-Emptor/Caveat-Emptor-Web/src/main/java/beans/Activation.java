@@ -6,6 +6,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
+import exception.AccountException;
 import services.user.IRegisterService;
 
 @ManagedBean(name = "activation")
@@ -22,8 +23,17 @@ public class Activation {
 	@PostConstruct
 	public void init() {
 
-		if (iRegisterService.isAccountActive(key))
+		try {
+			
+			iRegisterService.activateAccount(key);
+
 			valid = true;
+			
+		} catch (AccountException e) {
+
+			valid = false;
+		}
+
 	}
 
 	public String getKey() {

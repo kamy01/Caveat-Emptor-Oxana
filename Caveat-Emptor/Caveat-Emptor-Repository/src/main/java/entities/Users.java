@@ -46,7 +46,7 @@ public class Users implements Serializable{
 	@Column(name = "ADMIN")
 	private boolean admin;
 	
-	@Column(name = "ATATUS")
+	@Column(name = "STATUS")
 	private String status;
 
 	public String getStatus() {

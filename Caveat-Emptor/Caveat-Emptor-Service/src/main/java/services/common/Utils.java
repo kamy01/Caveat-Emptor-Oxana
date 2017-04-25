@@ -8,7 +8,7 @@ import repository.user.AccountStatus;
 
 public class Utils {
 	
-	public UserDto createUserDto(Users user) {
+	public static UserDto createUserDto(Users user) {
 
 		UserDto userDto = new UserDto();
 
@@ -25,7 +25,7 @@ public class Utils {
 
 	}
 	
-	public UserDto createUserDto(String firstName, String lastName, String userName, String email, String password){
+	public static UserDto createUserDto(String firstName, String lastName, String userName, String email, String password){
 		
 		UserDto userDto = new UserDto();
 		

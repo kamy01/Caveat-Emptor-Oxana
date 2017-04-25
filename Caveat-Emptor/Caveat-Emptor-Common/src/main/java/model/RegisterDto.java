@@ -14,7 +14,7 @@ public class RegisterDto {
 		this.id = id;
 	}
 	public Timestamp getConfirmationDate() {
-		return confirmationDate;
+		return (Timestamp)confirmationDate.clone();
 	}
 	public void setConfirmationDate(Timestamp confirmationDate) {
 		this.confirmationDate = confirmationDate;

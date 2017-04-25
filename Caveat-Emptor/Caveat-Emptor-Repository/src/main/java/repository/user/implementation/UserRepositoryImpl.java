@@ -1,18 +1,20 @@
 package repository.user.implementation;
 
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import entities.Register;
 import entities.Users;
+import exception.AccountException;
 import repository.user.IUserRepository;
 
 @Stateless
 public class UserRepositoryImpl implements IUserRepository {
 
-	public Users findUserByEmail(String email, EntityManager entityManager) {
+	public Users findUserByEmail(String email, EntityManager entityManager) throws AccountException {
 
 		try {
 
@@ -22,15 +24,14 @@ public class UserRepositoryImpl implements IUserRepository {
 
 			return (Users) userQuery.getSingleResult();
 
-		} catch (NoResultException e) {
+		} catch (PersistenceException e) {
 
-			return null;
-
+			throw new AccountException();
 		}
 
 	}
 
-	public Users findUserByUsername(String username, EntityManager entityManager) {
+	public Users findUserByUsername(String username, EntityManager entityManager) throws AccountException {
 
 		try {
 
@@ -40,15 +41,15 @@ public class UserRepositoryImpl implements IUserRepository {
 
 			return (Users) userQuery.getSingleResult();
 
-		} catch (NoResultException e) {
+		} catch (PersistenceException e) {
 
-			return null;
+			throw new AccountException();
 
 		}
 
 	}
 
-	public Register findUserRegisterByUserId(Long id, EntityManager entityManager) {
+	public Register findUserRegisterByUserId(Long id, EntityManager entityManager) throws AccountException {
 
 		try {
 
@@ -58,27 +59,27 @@ public class UserRepositoryImpl implements IUserRepository {
 
 			return (Register) registerQuery.getSingleResult();
 
-		} catch (NoResultException e) {
+		} catch (PersistenceException e) {
 
-			return null;
+			throw new AccountException();
 
 		}
 
 	}
 
-	public Register findUserByKeyValue(String key, EntityManager entityManager) {
+	public Register findUserByKeyValue(String key, EntityManager entityManager) throws AccountException {
 
 		try {
 
 			Query registerQuery = entityManager.createNamedQuery(Register.FIND_USER_REGISER_BY_KEY_VALUE);
-			
+
 			registerQuery.setParameter("key", key);
 
 			return (Register) registerQuery.getSingleResult();
 
-		} catch (NoResultException e) {
+		} catch (PersistenceException e) {
 
-			return null;
+			throw new AccountException();
 
 		}
 

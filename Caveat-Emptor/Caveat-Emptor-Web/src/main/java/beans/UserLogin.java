@@ -7,9 +7,10 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
+import FacesMessages.MyFacesMessage;
 import constants.Constant;
+import exception.AccountException;
 import model.UserDto;
 import repository.user.AccountStatus;
 import services.user.IUserService;
@@ -58,31 +59,46 @@ public class UserLogin implements Serializable {
 
 	public String login() {
 
-		FacesContext context = FacesContext.getCurrentInstance();
-		UserDto userDto = userService.getUserByUsername(username);
+		try {
 
-		if (userDto != null && userDto.getStatus().equals(AccountStatus.PENDING.getValue())) {
+			UserDto userDto = userService.getUserByUsername(username);
 
-			return "pages/" + Constant.REGISTERED_SUCCESS_PAGE + "?faces-redirect=true";
+			if (userDto != null && !isAccountConfirmed(userDto)) {
 
-		} else if (userDto != null && password.equals(userDto.getPassword())) {
+				return "pages/" + Constant.REGISTERED_SUCCESS_PAGE + "?faces-redirect=true";
 
-			return Constant.CAVEAT_EMPTOR_PAGE + "?faces-redirect=true";
+			} else if (userDto != null && password.equals(userDto.getPassword())) {
 
-		} else {
+				return Constant.CAVEAT_EMPTOR_PAGE + "?faces-redirect=true";
 
-			context.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_WARN, Constant.LOGIN_ERROR, Constant.INVALID_CREDENTIALS));
+			} else {
+
+				MyFacesMessage.addMessage(FacesMessage.SEVERITY_WARN, Constant.LOGIN_ERROR, Constant.INVALID_CREDENTIALS);
+
+				return Constant.HOME_PAGE + "?faces-redirect=true";
+
+			}
+			
+		} catch (AccountException e) {
+			
+			MyFacesMessage.addMessage(FacesMessage.SEVERITY_WARN, Constant.LOGIN_ERROR, Constant.NO_SUCH_USER);
 
 			return Constant.HOME_PAGE + "?faces-redirect=true";
-
 		}
+	}
+	
+	private boolean isAccountConfirmed(UserDto userDto){
+		
+		return userDto.getStatus().equals(AccountStatus.ACTIVE.getValue());
 	}
 
 	public void validateForm() {
 
-		if (!username.isEmpty())
+		if (!username.isEmpty()) {
+
 			isLoginEnabled = true;
+
+		}
 
 	}
 

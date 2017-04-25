@@ -7,17 +7,18 @@ import javax.ejb.Remote;
 
 import entities.Register;
 import entities.Users;
+import exception.AccountException;
 
 @Remote
 public interface IRegisterService {
 
-	public boolean isUserRegistered(UserDto userDto, String key);
+	public void registerNewUser(UserDto userDto, String key) throws AccountException;
 	
-	public Register findUserByKey(String key);
+	public Register findUserByKey(String key) throws AccountException;
 	
 	public void deleteConfirmedRegistration(Register register);
 	
-	public boolean isAccountActive(String key);
+	public void activateAccount(String key) throws AccountException;
 	
 	public void updateUserStatus(Users user);
 	

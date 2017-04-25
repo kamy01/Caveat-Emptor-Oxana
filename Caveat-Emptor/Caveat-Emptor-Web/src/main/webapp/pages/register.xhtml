@@ -23,22 +23,20 @@
 				<div class="sign-in-htm">
 					<div class="group">
 						<h:outputLabel for="firstname" value="First Name:" class="label" />
-						<p:inputText id="firstname" value="#{userRegister.firstName}"
+						<p:inputText id="firstname" value="#{userRegister.user.firstName}"
 							required="true" class="input" label="firstname">
-							<p:ajax event="blur" listener="#{userRegister.validateForm}"
-								update="growl" />
 						</p:inputText>
 					</div>
 					<div class="group">
 						<h:outputLabel for="lastname" value="Last Name:" class="label" />
-						<p:inputText id="lastname" value="#{userRegister.lastName}"
+						<p:inputText id="lastname" value="#{userRegister.user.lastName}"
 							required="true" class="input" label="lastname">
 
 						</p:inputText>
 					</div>
 					<div class="group">
 						<h:outputLabel for="email" value="Email Address:" class="label" />
-						<p:inputText id="email" value="#{userRegister.email}"
+						<p:inputText id="email" value="#{userRegister.user.email}"
 							required="true" class="input" label="email"
 							validatorMessage="Invalid email.">
 							<f:validateRegex
@@ -49,7 +47,7 @@
 					</div>
 					<div class="group">
 						<h:outputLabel for="username" value="Username:" class="label" />
-						<p:inputText id="username" value="#{userRegister.username}"
+						<p:inputText id="username" value="#{userRegister.user.userName}"
 							required="true" class="input" label="username">
 							<p:ajax event="blur"
 								listener="#{userRegister.checkExistingUsername}" update="growl" />
@@ -57,13 +55,13 @@
 					</div>
 					<div class="group">
 						<h:outputLabel for="pwd" value="Password:" class="label" />
-						<p:password id="pwd" value="#{userRegister.password}"
+						<p:password id="pwd" value="#{userRegister.user.password}"
 							required="true" label="pwd" class="input" match="pwd_confirm" />
 					</div>
 					<div class="group">
 						<h:outputLabel for="pwd_confirm" value="Confirm Password:"
 							class="label" />
-						<p:password id="pwd_confirm" value="#{userRegister.password}"
+						<p:password id="pwd_confirm" value="#{userRegister.user.password}"
 							required="true" label="pwd_confirm" class="input" />
 					</div>
 
