@@ -2,7 +2,9 @@ package services.common;
 
 
 
+import entities.Category;
 import entities.Users;
+import model.CategoryDto;
 import model.UserDto;
 import repository.user.AccountStatus;
 
@@ -38,5 +40,39 @@ public class Utils {
 		userDto.setStatus(AccountStatus.PENDING.getValue());
 		
 		return userDto;
+	}
+	
+	public static CategoryDto createCategoryDto(Long id, String name, String description, Long parentId){
+		
+		CategoryDto categoryDto = new CategoryDto();
+		
+		if(id != null){
+			
+			categoryDto.setId(id);
+			
+		}
+		
+		categoryDto.setName(name);
+		categoryDto.setDescription(description);
+		categoryDto.setParentId(parentId);
+		
+		return categoryDto;
+		
+	}
+	
+	public static Category createCategoryEntity(CategoryDto categoryDto){
+		
+		Category category = new Category();
+		
+		if(categoryDto.getId() != null){
+			
+			category.setId(categoryDto.getId());
+			
+		}
+		category.setName(categoryDto.getName());
+		category.setDescription(categoryDto.getDescription());
+		category.setParentId(categoryDto.getParentId());
+		
+		return category;
 	}
 }

@@ -12,7 +12,7 @@
 	<script src="resources/js/validation.js" type="text/javascript"></script>
 	<title>Login</title>
 </h:head>
-<h:body>
+<h:body class="authentication-div">
 	<div class="login-wrap">
 		<div class="login-html">
 			<h:outputLink class="tab active" value="index.xhtml">Sign In</h:outputLink>
@@ -36,7 +36,7 @@
 
 					<div class="group">
 						<p:commandButton value="Login" action="#{userLogin.login()}"
-							id="submitButton" update="loginForm" class="button"
+							id="submitButton" update="loginForm growl" class="button"
 							disabled="#{!userLogin.loginEnabled}" />
 					</div>
 					<div class="hr"></div>

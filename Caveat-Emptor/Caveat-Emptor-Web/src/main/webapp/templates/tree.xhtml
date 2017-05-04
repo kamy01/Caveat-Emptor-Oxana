@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+<h:body>
+	<p:growl id="message" showDetail="true" />
+	<p:tree value="#{treeBasicView.root}" var="node" selectionMode="single"
+		selection="#{treeBasicView.selectedNode}" id="tree">
+		<p:ajax event="expand"
+			listener="#{treeBasicView.onNodeExpand}" />
+		<p:ajax event="collapse"
+			listener="#{treeBasicView.onNodeCollapse}" />
+		<p:ajax event="select"
+			listener="#{content.onNodeSelect}" update="content-form:tabView:categories-page" process="@form"/>
+		<p:ajax event="unselect"
+			listener="#{treeBasicView.onNodeUnselect}" />
+		<p:treeNode>
+			<h:outputText value="#{node.getName()}" />
+		</p:treeNode>
+	</p:tree>
+	<div id="delimiter"></div>
+
+
+</h:body>
+</html>

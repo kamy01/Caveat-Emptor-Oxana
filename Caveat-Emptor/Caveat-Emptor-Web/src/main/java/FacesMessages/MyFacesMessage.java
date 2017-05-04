@@ -14,5 +14,15 @@ public class MyFacesMessage {
 				new FacesMessage(severity, summary, detail));
 		
 	}
+	
+	public static void addExternalMessage(Severity severity, String summary, String detail){
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		
+		context.addMessage(null,
+				new FacesMessage(severity, summary, detail));
+		
+		context.getExternalContext().getFlash().setKeepMessages(true);
+	}
 
 }

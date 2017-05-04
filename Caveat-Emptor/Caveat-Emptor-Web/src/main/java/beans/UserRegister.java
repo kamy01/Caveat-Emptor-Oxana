@@ -115,7 +115,7 @@ public class UserRegister {
 
 			}
 
-			MyFacesMessage.addMessage(FacesMessage.SEVERITY_WARN, Constant.REGISTER_ERROR, Constant.ALREADY_REGISTERED);
+			MyFacesMessage.addExternalMessage(FacesMessage.SEVERITY_WARN, Constant.REGISTER_ERROR, Constant.ALREADY_REGISTERED);
 			
 			return Constant.REGISER_PAGE + "?faces-redirect=true";
 

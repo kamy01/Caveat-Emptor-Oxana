@@ -1,13 +1,45 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </h:head>
 <h:body>
-	<div>content</div>
+	<div id="content">
+		<h:form id="content-form">
+			<p:growl id="msgs" showDetail="true" />
+			<p:tabView id="tabView" class="tabView">
+				<p:tab title="BIDDING">
+					<h:panelGrid columns="2" cellpadding="10">
+						<ui:include src="/pages/registeredSuccess.xhtml" />
+					</h:panelGrid>
+				</p:tab>
+				<p:tab title="ITEMS">
+					<h:panelGrid columns="2" cellpadding="10">
+						<ui:include src="/pages/justPage.xhtml" />
+					</h:panelGrid>
+				</p:tab>
+				<p:tab title="CATEGORIES">
+					<h:panelGrid columns="2" cellpadding="10">
+						<ui:include src="/pages/categories.xhtml" />
+					</h:panelGrid>
+				</p:tab>
+				<p:tab title="USERS">
+					<h:panelGrid columns="2" cellpadding="10">
+						<ui:include src="/pages/registeredSuccess.xhtml" />
+					</h:panelGrid>
+				</p:tab>
+				<p:tab title="ACCOUNT">
+					<h:panelGrid columns="2" cellpadding="10">
+						<ui:include src="/pages/registeredSuccess.xhtml" />
+					</h:panelGrid>
+				</p:tab>
+			</p:tabView>
+		</h:form>
+	</div>
 </h:body>
 </html>

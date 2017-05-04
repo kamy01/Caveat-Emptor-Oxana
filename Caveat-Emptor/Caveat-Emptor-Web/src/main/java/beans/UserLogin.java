@@ -72,23 +72,24 @@ public class UserLogin implements Serializable {
 				return Constant.CAVEAT_EMPTOR_PAGE + "?faces-redirect=true";
 
 			} else {
-
-				MyFacesMessage.addMessage(FacesMessage.SEVERITY_WARN, Constant.LOGIN_ERROR, Constant.INVALID_CREDENTIALS);
+				
+				MyFacesMessage.addExternalMessage(FacesMessage.SEVERITY_WARN, Constant.LOGIN_ERROR, Constant.INVALID_CREDENTIALS);
 
 				return Constant.HOME_PAGE + "?faces-redirect=true";
-
+				
 			}
-			
-		} catch (AccountException e) {
-			
-			MyFacesMessage.addMessage(FacesMessage.SEVERITY_WARN, Constant.LOGIN_ERROR, Constant.NO_SUCH_USER);
 
-			return Constant.HOME_PAGE + "?faces-redirect=true";
+		} catch (AccountException e) {
+
+			MyFacesMessage.addExternalMessage(FacesMessage.SEVERITY_WARN, Constant.LOGIN_ERROR, Constant.NO_SUCH_USER);
+
+			 return Constant.HOME_PAGE + "?faces-redirect=true";
 		}
-	}
-	
-	private boolean isAccountConfirmed(UserDto userDto){
-		
+
+	} 
+
+	private boolean isAccountConfirmed(UserDto userDto) {
+
 		return userDto.getStatus().equals(AccountStatus.ACTIVE.getValue());
 	}
 
