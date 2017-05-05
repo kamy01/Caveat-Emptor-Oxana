@@ -213,22 +213,23 @@ a {
 
 .tree-form {
 	position: absolute;
-    top: 0;
-    left: 0;
-    width: 20%;
-    height: 100%;
+	top: 0;
+	left: 0;
+	width: 20%;
+	height: 100%;
 }
 
 #content {
 	position: absolute;
-	top: 8%;
+	top: 10%;
 	width: 100%;
 	height: 84%;
 }
-.tabView{
+
+.tabView {
 	position: absolute !important;
-    bottom: 0%;
-    height: 100% !important
+	bottom: 0%;
+	height: 100% !important
 }
 
 #footer {
@@ -328,7 +329,8 @@ a {
 	z-index: 1000;
 }
 
-.ui-tabs-panels, .ui-tabs .ui-tabs-panel, .ui-tabs-panel td {
+.tabView .ui-tabs-panels, .tabView .ui-tabs .ui-tabs-panel, .tabView .ui-tabs-panel td
+	{
 	position: absolute;
 	width: 98%;
 	height: 100%;
@@ -356,7 +358,7 @@ a {
 	background: url(../images/search-white.png) no-repeat 10px 6px #fcfcfc;
 	border: 1px solid #d1d1d1;
 	font: bold 12px Arial, Helvetica, Sans-serif;
-	color: #2d3544;/* #bebebe; */
+	color: #2d3544; /* #bebebe; */
 	width: 250px;
 	padding: 6px 15px 6px 35px;
 	-webkit-border-radius: 20px;
@@ -423,13 +425,30 @@ a {
 .category-breadcrumb .ui-icon-home {
 	background-image: url(../images/gnome_go_home.png);
 }
-.ui-tree .ui-treenode-label.ui-state-hover, .ui-tree .ui-treenode-label.ui-state-highlight{
+
+.ui-tree .ui-treenode-label.ui-state-hover, .ui-tree .ui-treenode-label.ui-state-highlight
+	{
 	background-color: #2d3544;
 	color: white;
 }
-.ui-icon.ui-icon-closethick{
+
+.ui-icon.ui-icon-closethick {
 	background-image: url(../images/dialog_close.png);
 }
-.ui-dialog{
+
+.ui-dialog {
 	background-color: white;
+	width: 50% !important;
+	left: 25% !important;
+}
+
+.tabView .ui-dialog .ui-datagrid-column td, .ui-datatable,
+	.ui-datatable-data td {
+	height: auto !important;
+	width: auto !important;
+	position: relative !important;
+}
+
+.ui-datatable-data td:nth-child(2) {
+	display: block !important;
 }

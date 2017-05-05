@@ -2,12 +2,12 @@ package beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.NodeExpandEvent;
@@ -19,14 +19,11 @@ import org.primefaces.model.TreeNode;
 import model.CategoryDto;
 import services.categories.ICategory;
 
-@Named(value = "treeBasicView")
-@SessionScoped
+@ManagedBean(name = "treeBasicView")
+@ViewScoped
 public class Tree implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	@Inject
-	Content content;
 	
 	@EJB
 	ICategory iCategory;
@@ -39,7 +36,7 @@ public class Tree implements Serializable {
 	
 	private String description;
 
-	private ArrayList<CategoryDto> categories = new ArrayList<>();
+	private List<CategoryDto> categories;
 
 	@PostConstruct
 	public void init() {
@@ -77,14 +74,14 @@ public class Tree implements Serializable {
 	}
 	
 
-	public ArrayList<CategoryDto> getCategories() {
+	public List<CategoryDto> getCategories() {
 		return categories;
 	}
 
 	public void initializeTree() {
 
 		root = new DefaultTreeNode(new CategoryDto(), null);
-
+		
 		categories = iCategory.getAllCAtegories();
 
 		createRootNodes(root, null);
@@ -93,7 +90,7 @@ public class Tree implements Serializable {
 
 	private void createRootNodes(TreeNode root, Long parentId) {
 
-		ArrayList<CategoryDto> children = getChildrenForCurrentParrent(parentId);
+		ArrayList<CategoryDto> children = (ArrayList<CategoryDto>)getChildrenForCurrentParrent(parentId);
 
 		for (CategoryDto child : children) {
 
@@ -106,7 +103,7 @@ public class Tree implements Serializable {
 
 	}
 
-	private ArrayList<CategoryDto> getChildrenForCurrentParrent(Long parentId) {
+	private List<CategoryDto> getChildrenForCurrentParrent(Long parentId) {
 
 		ArrayList<CategoryDto> children = new ArrayList<>();
 
@@ -119,7 +116,7 @@ public class Tree implements Serializable {
 
 		}
 
-		return children;
+		return (List<CategoryDto>)children;
 	}
 
 	public void onNodeExpand(NodeExpandEvent event) {

@@ -1,45 +1,39 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                template="/templates/caveatEmptor.xhtml">
 
-<h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</h:head>
-<h:body>
+<ui:define name="body">
 	<div id="content">
-		<h:form id="content-form">
-			<p:growl id="msgs" showDetail="true" />
-			<p:tabView id="tabView" class="tabView">
-				<p:tab title="BIDDING">
-					<h:panelGrid columns="2" cellpadding="10">
-						<ui:include src="/pages/registeredSuccess.xhtml" />
-					</h:panelGrid>
-				</p:tab>
-				<p:tab title="ITEMS">
-					<h:panelGrid columns="2" cellpadding="10">
-						<ui:include src="/pages/justPage.xhtml" />
-					</h:panelGrid>
-				</p:tab>
-				<p:tab title="CATEGORIES">
-					<h:panelGrid columns="2" cellpadding="10">
-						<ui:include src="/pages/categories.xhtml" />
-					</h:panelGrid>
-				</p:tab>
-				<p:tab title="USERS">
-					<h:panelGrid columns="2" cellpadding="10">
-						<ui:include src="/pages/registeredSuccess.xhtml" />
-					</h:panelGrid>
-				</p:tab>
-				<p:tab title="ACCOUNT">
-					<h:panelGrid columns="2" cellpadding="10">
-						<ui:include src="/pages/registeredSuccess.xhtml" />
-					</h:panelGrid>
-				</p:tab>
-			</p:tabView>
-		</h:form>
+		<p:growl id="msgs" showDetail="true" />
+		<p:tabView id="tabView" styleClass="tabView">
+			<p:tab title="BIDDING">
+					<ui:include src="/pages/registeredSuccess.xhtml" />
+
+			</p:tab>
+			<p:tab title="ITEMS">
+
+					<ui:include src="/pages/items.xhtml" />
+
+			</p:tab>
+			<p:tab title="CATEGORIES">
+
+					<ui:include src="/pages/categories.xhtml" />
+
+			</p:tab>
+			<p:tab title="USERS">
+
+					<ui:include src="/pages/registeredSuccess.xhtml" />
+
+			</p:tab>
+			<p:tab title="ACCOUNT">
+	
+					<ui:include src="/pages/registeredSuccess.xhtml" />
+
+			</p:tab>
+		</p:tabView>
 	</div>
-</h:body>
-</html>
+</ui:define>
+</ui:composition>

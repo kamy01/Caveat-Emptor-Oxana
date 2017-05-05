@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="items-header">
+
+	</h:form>
+	<h:form id="items-content">
+		<p:dataTable var="item" value="#{itemsView.items}"
+			style="margin-bottom:40px">
+			<f:facet name="header">
+            Editable Values
+        </f:facet>
+			<p:ajax event="sort" skipChildren="false" />
+			<p:column headerText="Name" sortBy="#{item.name}">
+				<p:inputText value="#{item.name}" />
+			</p:column>
+
+			<p:column headerText="Categories">
+				<p:inputText value="#{item.category.name}" />
+			</p:column>
+
+			<p:column headerText="Initial price" sortBy="#{item.initialPrice}">
+				<p:inputText value="#{item.initialPrice}" />
+			</p:column>
+
+			<p:column headerText="Best bid" sortBy="#{item.bestBidValue}">
+				<p:inputText value="#{item.bestBidValue}" />
+			</p:column>
+			
+			<p:column headerText="Opening date" sortBy="#{item.openingDate}">
+				<p:inputText value="#{item.openingDate}" />
+			</p:column>
+			
+			<p:column headerText="Closing date" sortBy="#{item.expiringDate}">
+				<p:inputText value="#{item.expiringDate}" />
+			</p:column>
+			
+			<p:column headerText="Status" sortBy="#{item.status}">
+				<p:inputText value="#{item.status}" />
+			</p:column>
+			
+		</p:dataTable>
+	</h:form>
+
+</ui:composition>

@@ -1,6 +1,6 @@
 package repository.category.implementation;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -13,11 +13,11 @@ import repository.category.ICategoryRepository;
 public class CategoryRepositoryImpl implements ICategoryRepository {
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<Category> getAllCAtegories(EntityManager entityManager) {
+	public List<Category> getAllCAtegories(EntityManager entityManager) {
 
 		Query categoriesQuery = entityManager.createNamedQuery(Category.FIND_ALL_CATEGORIES);
 
-		return (ArrayList<Category>) categoriesQuery.getResultList();
+		return categoriesQuery.getResultList();
 
 	}
 

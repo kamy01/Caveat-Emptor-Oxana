@@ -1,6 +1,6 @@
 package repository.category;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.Remote;
 import javax.persistence.EntityManager;
@@ -10,6 +10,6 @@ import entities.Category;
 @Remote
 public interface ICategoryRepository {
 
-	public ArrayList<Category> getAllCAtegories(EntityManager entityManager);
+	public List<Category> getAllCAtegories(EntityManager entityManager);
 	
 }

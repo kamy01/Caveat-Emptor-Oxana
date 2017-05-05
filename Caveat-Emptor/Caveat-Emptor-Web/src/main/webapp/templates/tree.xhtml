@@ -16,7 +16,7 @@
 		<p:ajax event="collapse"
 			listener="#{treeBasicView.onNodeCollapse}" />
 		<p:ajax event="select"
-			listener="#{content.onNodeSelect}" update="content-form:tabView:categories-page" process="@form"/>
+			listener="#{content.onNodeSelect}" update=":tabView:content-form" process="@form" />
 		<p:ajax event="unselect"
 			listener="#{treeBasicView.onNodeUnselect}" />
 		<p:treeNode>

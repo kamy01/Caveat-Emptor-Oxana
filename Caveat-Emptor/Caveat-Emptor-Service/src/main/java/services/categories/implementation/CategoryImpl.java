@@ -1,12 +1,12 @@
 package services.categories.implementation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 
 import entities.Category;
 import exception.AccountException;
@@ -24,11 +24,11 @@ public class CategoryImpl implements ICategory {
 	@EJB
 	ICategoryRepository iCategory;
 
-	public ArrayList<CategoryDto> getAllCAtegories() {
+	public List<CategoryDto> getAllCAtegories() {
 
-		ArrayList<Category> categories = iCategory.getAllCAtegories(entityManager);
+		ArrayList<Category> categories = (ArrayList<Category>)iCategory.getAllCAtegories(entityManager);
 
-		ArrayList<CategoryDto> categoriesDto = new ArrayList<>(categories.size());
+		ArrayList<CategoryDto> categoriesDto = new ArrayList<>();
 
 		for (Category category : categories) {
 
@@ -37,7 +37,7 @@ public class CategoryImpl implements ICategory {
 
 		}
 
-		return categoriesDto;
+		return (List<CategoryDto>)categoriesDto;
 	}
 
 	public void addNewCategory(CategoryDto categoryDto) throws AccountException {
@@ -48,9 +48,9 @@ public class CategoryImpl implements ICategory {
 
 	}
 
-	public void removeCategory(CategoryDto parent, ArrayList<CategoryDto> children) throws AccountException {
+	public void removeCategory(CategoryDto parent, List<CategoryDto> children) throws AccountException {
 
-		ArrayList<Category> categories = changeCategoryDtoToCategory(children);
+		List<Category> categories = changeCategoryDtoToCategory(children);
 
 		updateParentIdForChildren(categories, parent.getParentId());
 
@@ -58,7 +58,7 @@ public class CategoryImpl implements ICategory {
 
 	}
 
-	public ArrayList<Category> changeCategoryDtoToCategory(ArrayList<CategoryDto> categoriesDto) {
+	public List<Category> changeCategoryDtoToCategory(List<CategoryDto> categoriesDto) {
 
 		ArrayList<Category> categories = new ArrayList<>();
 
@@ -68,7 +68,7 @@ public class CategoryImpl implements ICategory {
 
 		}
 
-		return categories;
+		return (List<Category>)categories;
 	}
 
 	public void removeCategory(Category category) {
@@ -83,7 +83,7 @@ public class CategoryImpl implements ICategory {
 
 	}
 
-	private void updateParentIdForChildren(ArrayList<Category> children, Long grandpaId) {
+	private void updateParentIdForChildren(List<Category> children, Long grandpaId) {
 
 		for (Category child : children) {
 

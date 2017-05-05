@@ -1,69 +1,83 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-</h:head>
-<h:body>
-	<div class="tree-form">
-		<ui:insert name="tree" id="tree">
-			<ui:include src="../templates/tree.xhtml" />
-		</ui:insert>
-	</div>
-	<br />
-	<h:panelGroup id="categories-page" layout="block">
-		<div class="categories-header">
-			<div id="search">
-				<p:inputText type="text" name="q" size="40" placeholder="Search..."
-					value="#{content.searchValue}" autocomplete="off"
-					onkeypress="if (event.keyCode == 13) {event.target.blur();event.stopPropagation();return false;} else {return true;};">
-					<p:ajax event="change" listener="#{content.searchForCategory}"
-						update="content-form:tabView:categories-page" process="@form"></p:ajax>
-				</p:inputText>
+	<h:form class="tree-form" id="tree-form">
+		<p:growl id="message" showDetail="true" />
+		<p:tree value="#{treeBasicView.root}" var="node"
+			selectionMode="single" selection="#{treeBasicView.selectedNode}"
+			id="tree">
+			<p:ajax event="expand" listener="#{treeBasicView.onNodeExpand}" />
+			<p:ajax event="collapse" listener="#{treeBasicView.onNodeCollapse}" />
+			<p:ajax event="select" listener="#{content.onNodeSelect}"
+				update=":tabView:content-form" process="@form" />
+			<p:ajax event="unselect" listener="#{treeBasicView.onNodeUnselect}" />
+			<p:treeNode>
+				<h:outputText value="#{node.getName()}" />
+			</p:treeNode>
+		</p:tree>
+		<div id="delimiter"></div>
+	</h:form>
+	<h:form id="content-form">
+		<h:panelGroup id="categories-page" layout="block">
+			<div class="categories-header">
+				<div id="search">
+					<p:inputText type="text" name="q" size="40" placeholder="Search..."
+						value="#{content.searchValue}" autocomplete="off"
+						onkeypress="if (event.keyCode == 13) {event.target.blur();event.stopPropagation(); return false;} else { return true;};">
+						<p:ajax event="blur" listener="#{content.searchForCategory}"
+							onsuccess="PF('dlg2').show(); return false;"
+							update=":tabView:dialog-form:dialog-content" process="@this" />
+					</p:inputText>
+				</div>
+				<p:commandButton value="Create New Category" id="newCategoryBtn"
+					class="button">
+					<p:ajax listener="#{content.resetContentFields}"
+						update="tabView:content-form" process="@form" />
+				</p:commandButton>
 			</div>
-			<p:commandButton value="Create New Category" id="newCategoryBtn"
-				class="button">
-				<p:ajax listener="#{content.resetContentFields}"
-					update="content-form:tabView" process="@form"></p:ajax>
-			</p:commandButton>
-		</div>
 
-		<div class="category-breadcrumb" id="category-breadcrumb">
-			<p:breadCrumb model="#{content.model}">
-			</p:breadCrumb>
-		</div>
+			<div class="category-breadcrumb" id="category-breadcrumb">
+				<p:breadCrumb model="#{content.model}" />
+			</div>
 
-		<div class="category-description" id="category-description">
-			<p:inputText label="name" placeholder="Name" value="#{content.name}"></p:inputText>
-			<p:inputTextarea rows="10" cols="50" placeholder="Description"
-				value="#{content.description}"></p:inputTextarea>
-		</div>
+			<div class="category-description" id="category-description">
+				<p:inputText label="name" placeholder="Name" value="#{content.name}"></p:inputText>
+				<p:inputTextarea rows="10" cols="50" placeholder="Description"
+					value="#{content.description}"></p:inputTextarea>
+			</div>
 
-		<div class="category-save">
-			<p:commandButton value="Save" class="category-button" id="saveBtn">
-				<p:ajax listener="#{content.addNewCategory()}"
-					update="content-form:tabView" process="@form"></p:ajax>
-			</p:commandButton>
-			<p:commandButton value="Remove" class="category-button"
-				id="removeBtn">
-				<p:ajax listener="#{content.removeCategory}"
-					update="content-form:tabView" process="@form"></p:ajax>
-			</p:commandButton>
-		</div>
-		<p:dialog header="Search Results" widgetVar="dlg1" modal="true" showEffect="fade" hideEffect="fade"
-			id="dialog">
-			<p:dataGrid columns="5" value="#{content.categorySearchResult}"
-				layout="grid" var="item">
-				<p:panel header="#{item.getName()}" style="text-align:center">
-					<h:panelGrid columns="1" style="width:100%">
-						<h:outputText value="#{item.getDescription()}" />
+			<div class="category-save">
+				<p:commandButton value="Save" class="category-button" id="saveBtn">
+					<p:ajax listener="#{content.addNewCategory()}"
+						update="tabView:content-form :tabView:tree-form:tree" process="@form"></p:ajax>
+				</p:commandButton>
+				<p:commandButton value="Remove" class="category-button"
+					id="removeBtn">
+					<p:ajax listener="#{content.removeCategory}"
+						update=":tabView:content-form :tabView:tree-form:tree" process="@form"></p:ajax>
+				</p:commandButton>
+			</div>
+		</h:panelGroup>
+	</h:form>
+	<h:form id="dialog-form">
+		<p:dialog header="Search Results" widgetVar="dlg2" modal="true"
+			showEffect="fade" hideEffect="fade">
+
+			<h:panelGroup id="dialog-content">
+				<ui:repeat value="#{content.categorySearchResult}" var="item">
+					<p:commandLink value="#{item.name}"
+						update=":tabView:tree-form:tree :tabView:content-form"
+						onsuccess="PF('dlg2').hide(); return false;"
+						action="#{content.findTreeCategory(item)}" process="@this" />
+					<h:panelGrid columns="1">
+						<h:outputText value="description" />
 					</h:panelGrid>
-				</p:panel>
-			</p:dataGrid>
+				</ui:repeat>
+			</h:panelGroup>
 		</p:dialog>
-	</h:panelGroup>
-</h:body>
-</html>
+	</h:form>
+</ui:composition>
