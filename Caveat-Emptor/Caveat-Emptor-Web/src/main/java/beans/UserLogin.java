@@ -5,8 +5,8 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 
 import FacesMessages.MyFacesMessage;
 import constants.Constant;
@@ -16,13 +16,14 @@ import repository.user.AccountStatus;
 import services.user.IUserService;
 
 @ManagedBean(name = "userLogin")
-@ViewScoped
+@ApplicationScoped
 public class UserLogin implements Serializable {
 
 	private static final long serialVersionUID = 5443351151396868724L;
 
 	private String username;
 	private String password;
+	private Long id;
 	private boolean isLoginEnabled;
 
 	@EJB
@@ -31,6 +32,14 @@ public class UserLogin implements Serializable {
 	@PostConstruct
 	public void init() {
 		isLoginEnabled = false;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getUsername() {
@@ -69,6 +78,8 @@ public class UserLogin implements Serializable {
 
 			} else if (userDto != null && password.equals(userDto.getPassword())) {
 
+				setId(userDto.getId());
+				
 				return Constant.CAVEAT_EMPTOR_PAGE + "?faces-redirect=true";
 
 			} else {

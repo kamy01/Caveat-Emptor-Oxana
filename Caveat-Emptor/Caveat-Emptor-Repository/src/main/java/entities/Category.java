@@ -40,7 +40,7 @@ public class Category implements Serializable{
 	@Column(name = "PARENT_ID")
 	private Long parentId;
 	
-	@OneToMany(mappedBy="category", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="category", fetch = FetchType.LAZY)
 	private List<Items> items;
 	
 	

@@ -10,5 +10,5 @@ import entities.Items;
 @Remote
 public interface IItemsRepository {
 
-	public List<Items> finAllItems(EntityManager entityManager);
+	public List<Items> findItemByUserId(EntityManager entityManager, Long id);
 }

@@ -13,10 +13,12 @@ import repository.items.IItemsRepository;
 public class ItemsRepository implements IItemsRepository{
 
 	@SuppressWarnings("unchecked")
-	public List<Items> finAllItems(EntityManager entityManager) {
+	public List<Items> findItemByUserId(EntityManager entityManager, Long id) {
 
-		Query itemsQuery = entityManager.createNamedQuery(Items.FIND_ALL_ITEMS);
+		Query itemsQuery = entityManager.createNamedQuery(Items.FIND_ITEMS_BY_USER_ID);
 
+		itemsQuery.setParameter("userId", id);
+		
 		return itemsQuery.getResultList();
 		
 	}

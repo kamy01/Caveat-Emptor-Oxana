@@ -17,13 +17,13 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "Items.findAllItems", query = "SELECT item from Items item"),})
+	@NamedQuery(name = "Items.findItemByUserId", query = "SELECT item from Items item where item.userId = :userId"),})
 @Table(name="items")
 public class Items implements Serializable{
 
 	private static final long serialVersionUID = 252618522771935009L;
 	
-	public static final String FIND_ALL_ITEMS = "Items.findAllItems";
+	public static final String FIND_ITEMS_BY_USER_ID = "Items.findItemByUserId";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,10 +54,30 @@ public class Items implements Serializable{
 	@Column(name = "STATUS")
 	private String status;
 	
+	@Column(name = "USER_ID")
+	private Long userId;
+	
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "category_id")
 	private Category category;
 	
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "user_id")
+	private Users user;
+	
+	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public Users getUser() {
+		return user;
+	}
+	public void setUser(Users user) {
+		this.user = user;
+	}
 	public Long getId() {
 		return id;
 	}

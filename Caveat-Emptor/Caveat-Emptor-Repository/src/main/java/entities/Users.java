@@ -1,14 +1,17 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -48,6 +51,17 @@ public class Users implements Serializable{
 	
 	@Column(name = "STATUS")
 	private String status;
+	
+	@OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+	private List<Items> items;
+
+	public List<Items> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Items> items) {
+		this.items = items;
+	}
 
 	public String getStatus() {
 		return status;

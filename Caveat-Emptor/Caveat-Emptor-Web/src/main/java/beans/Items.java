@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import model.ItemDto;
@@ -20,11 +21,22 @@ public class Items implements Serializable{
 	@EJB
 	IItemsService iItemService;
 	
+	@ManagedProperty("#{userLogin}")
+	private UserLogin userLogin;
+	
 	private List<ItemDto> items;
 	
 	@PostConstruct
 	public void init(){
-		items = iItemService.getAllItems(); 
+		items = iItemService.getItemsByUserId(userLogin.getId()); 
+	}
+
+	public UserLogin getUserLogin() {
+		return userLogin;
+	}
+
+	public void setUserLogin(UserLogin userLogin) {
+		this.userLogin = userLogin;
 	}
 
 	public List<ItemDto> getItems() {

@@ -9,5 +9,5 @@ import model.ItemDto;
 @Remote
 public interface IItemsService {
 
-	public List<ItemDto> getAllItems();
+	public List<ItemDto> getItemsByUserId(Long id);
 }

@@ -23,9 +23,9 @@ public class ItemsImpl implements IItemsService {
 	@EJB
 	IItemsRepository iItemRepository;
 
-	public List<ItemDto> getAllItems() {
+	public List<ItemDto> getItemsByUserId(Long id) {
 
-		ArrayList<Items> items = (ArrayList<Items>) iItemRepository.finAllItems(entityManager);
+		ArrayList<Items> items = (ArrayList<Items>) iItemRepository.findItemByUserId(entityManager, id);
 
 		ArrayList<ItemDto> itemsDto = new ArrayList<>();
 
