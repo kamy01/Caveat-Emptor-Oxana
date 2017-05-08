@@ -16,10 +16,10 @@ public final class Constant {
 	public static final String MAIL_SUBJECT = "We are glad you have registered to Caveat Emptor. \n\n Please, activate your account by clicking this link:";
 	public static final String MAIL_SENDER = "Best regards. \n\n The Caveat Emptor team.";
 	
-	public static final String HOME_PAGE = "home";
-	public static final String CAVEAT_EMPTOR_PAGE = "templates/caveatEmptor";
-	public static final String REGISER_PAGE = "register";
-	public static final String REGISTERED_SUCCESS_PAGE = "registeredSuccess";
+	public static final String HOME_PAGE = "home.xhtml";
+	public static final String CAVEAT_EMPTOR_PAGE = "templates/caveatEmptor.xhtml";
+	public static final String REGISER_PAGE = "register.xhtml";
+	public static final String REGISTERED_SUCCESS_PAGE = "registeredSuccess.xhtml";
 	
 	public static final String NEW_LINE = "\n";
 	

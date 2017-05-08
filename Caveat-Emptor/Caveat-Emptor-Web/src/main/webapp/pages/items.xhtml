@@ -5,45 +5,170 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<h:form id="items-header">
-
+	<h:form id="items-header" class="items-header">
+		<h:panelGrid class="itemsDropDown" style="float: left;">
+			<p:outputLabel for="items" value="Items to: "
+				style="font-size: 20px;" />
+			<p:selectOneMenu id="items" value="#{itemsView.itemPurpose}"
+				style="width:150px">
+				<p:ajax listener="#{dropdownView.onDropDownChange}"
+					update=":tabView:items-content" process="@this" />
+				<f:selectItem itemLabel="Select Country" itemValue=""
+					noSelectionOption="true" />
+				<f:selectItems value="#{itemsView.dropDownItems}" />
+			</p:selectOneMenu>
+		</h:panelGrid>
+		<p:commandButton value="Create New Item" class="button"
+			style="float: right;">
+			<p:ajax listener="#{itemsView.openDialogWindow}" event="click"
+				update="tabView:newItem-form" process="@this" />
+		</p:commandButton>
 	</h:form>
-	<h:form id="items-content">
+	<h:form id="items-content" class="items-content">
 		<p:dataTable var="item" value="#{itemsView.items}"
-			style="margin-bottom:40px">
-			<f:facet name="header">
-            Editable Values
-        </f:facet>
-			<p:ajax event="sort" skipChildren="false" />
+			style="margin-bottom:40px" widgetVar="itemsList" editable="true"
+			editMode="cell">
+
+			<p:ajax event="cellEdit" listener="#{itemsView.onCellEdit}" />
 			<p:column headerText="Name" sortBy="#{item.name}">
-				<p:inputText value="#{item.name}" />
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.name}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.name}" style="width:96%" />
+					</f:facet>
+				</p:cellEditor>
 			</p:column>
 
 			<p:column headerText="Categories">
-				<p:inputText value="#{item.category.name}" />
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.category.name}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.category.name}" style="width:96%" />
+					</f:facet>
+				</p:cellEditor>
 			</p:column>
 
 			<p:column headerText="Initial price" sortBy="#{item.initialPrice}">
-				<p:inputText value="#{item.initialPrice}" />
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.initialPrice}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.initialPrice}" style="width:96%" />
+					</f:facet>
+				</p:cellEditor>
 			</p:column>
 
 			<p:column headerText="Best bid" sortBy="#{item.bestBidValue}">
-				<p:inputText value="#{item.bestBidValue}" />
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.bestBidValue}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.bestBidValue}" style="width:96%" />
+					</f:facet>
+				</p:cellEditor>
 			</p:column>
-			
+
 			<p:column headerText="Opening date" sortBy="#{item.openingDate}">
-				<p:inputText value="#{item.openingDate}" />
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.openingDate}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.openingDate}" style="width:96%" />
+					</f:facet>
+				</p:cellEditor>
 			</p:column>
-			
+
 			<p:column headerText="Closing date" sortBy="#{item.expiringDate}">
-				<p:inputText value="#{item.expiringDate}" />
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.expiringDate}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.expiringDate}" style="width:96%" />
+					</f:facet>
+				</p:cellEditor>
 			</p:column>
-			
+
 			<p:column headerText="Status" sortBy="#{item.status}">
-				<p:inputText value="#{item.status}" />
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.status}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.status}" style="width:96%" />
+					</f:facet>
+				</p:cellEditor>
 			</p:column>
-			
+
 		</p:dataTable>
+	</h:form>
+	<h:form id="newItem-form">
+		<p:dialog widgetVar="newItem-dialog" modal="true" showEffect="fade"
+			hideEffect="fade">
+
+			<h:panelGroup id="dialog-content">
+				<p:wizard flowListener="#{itemsView.addCategoryToItem}">
+					<p:tab id="categories-tree" title="Categories">
+						<p:panel header="Select category">
+							<p:tree value="#{treeBasicView.root}" var="node"
+								selectionMode="single" selection="#{treeBasicView.selectedNode}"
+								id="tree">
+								<p:ajax event="expand" listener="#{treeBasicView.onNodeExpand}" />
+								<p:ajax event="collapse"
+									listener="#{treeBasicView.onNodeCollapse}" />
+								<p:ajax event="select" listener="#{itemsView.onNodeSelect}"
+									update=":tabView:items-content" process="@form" />
+								<p:ajax event="unselect"
+									listener="#{treeBasicView.onNodeUnselect}" />
+								<p:treeNode>
+									<h:outputText value="#{node.getName()}" />
+								</p:treeNode>
+							</p:tree>
+						</p:panel>
+					</p:tab>
+
+					<p:tab id="details" title="Item details">
+						<p:panel header="Item Details">
+							<p:messages />
+							<h:panelGrid columns="2" columnClasses="label, value">
+
+								<h:outputText value="Name: " />
+								<h:inputText value="#{itemsView.itemDto.name}" />
+
+								<h:outputText value="Description: " />
+								<h:inputText value="#{itemsView.itemDto.description}" />
+
+								<h:outputText value="Initial Price " />
+								<h:inputText value="#{itemsView.itemDto.initialPrice}" />
+
+							</h:panelGrid>
+						</p:panel>
+					</p:tab>
+					<p:tab id="date" title="Date">
+						<p:panel header="Choose Date">
+							<p:messages />
+							<h:panelGrid columns="2" columnClasses="label, value">
+
+								<p:outputLabel for="endDate" value="Expiring Date:" />
+								<p:calendar id="endDate" value="#{itemsView.itemDto.expiringDate}"
+									showOn="button" />
+
+							</h:panelGrid>
+							<p:commandButton value="Submit"
+								actionListener="#{itemsView.createNewItem()}"
+								update=":tabView:items-content" process="@this" />
+						</p:panel>
+					</p:tab>
+				</p:wizard>
+			</h:panelGroup>
+		</p:dialog>
 	</h:form>
 
 </ui:composition>

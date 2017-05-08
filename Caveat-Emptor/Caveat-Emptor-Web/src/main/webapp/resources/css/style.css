@@ -279,7 +279,7 @@ a {
 	outline: none;
 }
 
-.ui-tabs .ui-tabs-nav li a:focus{
+.ui-tabs .ui-tabs-nav li a:focus {
 	outline: none !important;
 }
 
@@ -353,8 +353,9 @@ a {
 	position: absolute;
 	right: 0;
 	height: 5%;
-	top: -38px;
+	top: -45px;
 	z-index: 1000;
+	padding: 0 !important;
 }
 
 .tabView .ui-tabs-panels, .tabView .ui-tabs .ui-tabs-panel, .tabView .ui-tabs-panel td
@@ -379,7 +380,7 @@ a {
 #search {
 	position: relative;
 	float: left;
-	margin-right: 10%;
+	margin-right: 31%;
 }
 
 #search input[type="text"] {
@@ -423,7 +424,7 @@ a {
 
 .category-description input[type="text"] {
 	position: relative;
-	width: 40%;
+	width: 61%;
 	float: left;
 	margin-bottom: 3%;
 	border-radius: 0;
@@ -433,6 +434,7 @@ a {
 	position: relative;
 	float: left;
 	width: 61%;
+	height: 80% !important;
 }
 
 .category-save {
@@ -485,7 +487,7 @@ a {
 	display: block !important;
 }
 
-.ui-datatable, .ui-button {
+.tabView .ui-datatable, .tabView .ui-button {
 	font-family: 'Helvetica Neue', Helvetica, Arial;
 	font-size: 14px;
 	line-height: 20px;
@@ -499,12 +501,14 @@ a {
 	line-height: 20px;
 	font-size: 14px;
 	border: none;
-}
-.category-save .ui-button .ui-button-text{
-	background-color: #2d3544;
+	text-align: center;
 }
 
-.ui-datatable thead th, .ui-button .ui-button-text {
+.category-save .ui-button .ui-button-text {
+	background-color: #2d3544 !important;
+}
+
+.tabView .ui-datatable thead th, .tabView .ui-button .ui-button-text {
 	/*background: #f6f6f6;*/
 	border: none !important;
 	color: #ffffff;
@@ -519,4 +523,40 @@ a {
 	background-image: url(../images/arrow-216-16.png) !important;
 	width: 16px;
 	height: 16px;
+}
+
+.items-header {
+	position: absolute;
+	width: 60%;
+	height: 10%;
+	left: 20%;
+}
+
+.items-content {
+	position: absolute;
+	width: 60%;
+	height: 80%;
+	top: 10%;
+	left: 20%;
+}
+
+.itemsDropDown td {
+	position: relative !important;
+	width: auto !important;
+	height: auto !important;
+}
+.itemsDropDown tr{
+	float: left;
+}
+.ui-selectonemenu-panel .ui-selectonemenu-list{
+	background-color: white;
+}
+.ui-selectonemenu-panel .ui-selectonemenu-list li:hover,
+.ui-selectonemenu-panel .ui-selectonemenu-list li.ui-state-highlight{
+	background-color: #474e5d;
+	color: white;
+}
+.ui-dialog .ui-panel-content .ui-tree{
+	margin-top: 0 !important;
+	margin-left: 0 !important;
 }
