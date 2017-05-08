@@ -8,6 +8,7 @@ public final class Constant {
 	public static final String LOGIN_ERROR = "Login Error";
 	public static final String CATEGORY_WARN = "WARNING";
 	public static final String DELETE_NO_CATEGORY = "Select the category you want to delete!";
+	public static final String ADD_FIELD_EMPTY = "Please complete all fields!";
 	public static final String USERNAME_EXISTS = "Username already exists!";
 	public static final String EMAIL_EXISTS = "Email already exists!";
 	public static final String INVALID_CREDENTIALS = "Invalid credentials";

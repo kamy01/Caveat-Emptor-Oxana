@@ -6,7 +6,6 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:form class="tree-form" id="tree-form">
-		<p:growl id="message" showDetail="true" />
 		<p:tree value="#{treeBasicView.root}" var="node"
 			selectionMode="single" selection="#{treeBasicView.selectedNode}"
 			id="tree">
@@ -22,6 +21,7 @@
 		<div id="delimiter"></div>
 	</h:form>
 	<h:form id="content-form">
+	<p:growl id="message" showDetail="true" />
 		<h:panelGroup id="categories-page" layout="block">
 			<div class="categories-header">
 				<div id="search">

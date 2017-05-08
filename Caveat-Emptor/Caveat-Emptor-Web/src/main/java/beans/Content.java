@@ -185,6 +185,8 @@ public class Content implements Serializable {
 				tree.initializeTree();
 
 				resetContentFields();
+				
+				findTreeCategory(newCategory);
 
 			} catch (AccountException e) {
 
@@ -192,6 +194,11 @@ public class Content implements Serializable {
 
 			}
 
+		} else {
+			
+			MyFacesMessage.addMessage(FacesMessage.SEVERITY_WARN, Constant.CATEGORY_WARN,
+					Constant.ADD_FIELD_EMPTY);
+			
 		}
 
 	}
@@ -211,6 +218,8 @@ public class Content implements Serializable {
 				tree.initializeTree();
 
 				resetContentFields();
+				
+				findTreeCategory(parentNode);
 
 			} else {
 
