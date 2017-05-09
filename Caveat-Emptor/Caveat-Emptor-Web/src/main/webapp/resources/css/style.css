@@ -483,7 +483,8 @@ a {
 	border: none !important;
 }
 
-.ui-datatable-data td:nth-child(2) {
+.ui-datatable-data td:nth-child(2),
+.tabView .ui-tabs-panel .ui-dialog td:nth-child(2)  {
 	display: block !important;
 }
 
@@ -569,4 +570,5 @@ a {
 	position: relative !important;
 	width: auto !important;
 	height: auto !important;
+	display: block !important;
 }

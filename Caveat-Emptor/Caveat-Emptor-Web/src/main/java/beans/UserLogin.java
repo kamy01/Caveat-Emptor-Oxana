@@ -23,7 +23,7 @@ public class UserLogin implements Serializable {
 
 	private String username;
 	private String password;
-	private Long id;
+	private UserDto user;
 	private boolean isLoginEnabled;
 
 	@EJB
@@ -31,15 +31,15 @@ public class UserLogin implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		isLoginEnabled = false;
-	}
-	
-	public Long getId() {
-		return id;
+		user = new UserDto();
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public UserDto getUser() {
+		return user;
+	}
+
+	public void setUser(UserDto user) {
+		this.user = user;
 	}
 
 	public String getUsername() {
@@ -70,15 +70,13 @@ public class UserLogin implements Serializable {
 
 		try {
 
-			UserDto userDto = userService.getUserByUsername(username);
+			user = userService.getUserByUsername(username);
 
-			if (userDto != null && !isAccountConfirmed(userDto)) {
+			if (user != null && !isAccountConfirmed(user)) {
 
 				return "pages/" + Constant.REGISTERED_SUCCESS_PAGE + "?faces-redirect=true";
 
-			} else if (userDto != null && password.equals(userDto.getPassword())) {
-
-				setId(userDto.getId());
+			} else if (user != null && password.equals(user.getPassword())) {
 				
 				return Constant.CAVEAT_EMPTOR_PAGE + "?faces-redirect=true";
 

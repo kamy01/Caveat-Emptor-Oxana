@@ -34,11 +34,23 @@ public class ItemsImpl implements IItemsService {
 			itemsDto.add(Utils.createItemDto(item.getId(), item.getName(), item.getDescription(), item.getImagePath(),
 					item.getInitialPrice(), item.getOpeningDate(), item.getExpiringDate(), item.getBestBidValue(),
 					item.getStatus(), Utils.createCategoryDto(item.getCategory().getId(), item.getCategory().getName(),
-							item.getCategory().getDescription(), item.getCategory().getParentId())));
+							item.getCategory().getDescription(), item.getCategory().getParentId()),  Utils.createUserDto(item.getUser())));
 
 		}
 
 		return (List<ItemDto>) itemsDto;
+	}
+	
+	public void addNewItem(ItemDto item){
+		
+		Items newItem = Utils.createItemEntity(item);
+		
+		if(newItem != null){
+			
+			entityManager.merge(newItem);
+			
+		}
+		
 	}
 
 }

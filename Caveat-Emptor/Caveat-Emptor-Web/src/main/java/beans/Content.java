@@ -183,10 +183,18 @@ public class Content implements Serializable {
 				iCategory.addNewCategory(newCategory);
 
 				tree.initializeTree();
+				
+				//TODO (expand tree when add new category)
+/*				TreeNode thChild = new DefaultTreeNode(newCategory, tree.getSelectedNode());
+
+				thChild.setParent(tree.getSelectedNode());
 
 				resetContentFields();
 				
-				findTreeCategory(newCategory);
+				setSelectedNode(thChild);
+				expandParent(thChild);
+				resetContentFields();
+				initializeContextFields(thChild);*/
 
 			} catch (AccountException e) {
 
@@ -215,11 +223,17 @@ public class Content implements Serializable {
 
 				iCategory.removeCategory(parentNode, children);
 
-				tree.initializeTree();
+				//tree.initializeTree();
+				TreeNode parent = tree.getSelectedNode().getParent();
+				
+				parent.getChildren().remove(tree.getSelectedNode());
 
 				resetContentFields();
 				
-				findTreeCategory(parentNode);
+				setSelectedNode(parent);
+				expandParent(parent);
+				resetContentFields();
+				initializeContextFields(parent);
 
 			} else {
 

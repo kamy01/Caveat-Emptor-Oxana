@@ -1,6 +1,8 @@
 package beans;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +18,6 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.FlowEvent;
-import org.primefaces.event.NodeSelectEvent;
 
 import FacesMessages.MyFacesMessage;
 import common.ItemPurpose;
@@ -45,6 +46,8 @@ public class Items implements Serializable {
 	private Map<String, String> dropDownItems;
 	private CategoryDto category;
 	private ItemDto itemDto;
+	private Date itemEndDate;
+	private Date itemStartDate;
 
 	@PostConstruct
 	public void init() {
@@ -58,9 +61,29 @@ public class Items implements Serializable {
 		initializeDropDown();
 
 		onDropDownChange();
-		
+
 		itemDto = new ItemDto();
 
+		itemEndDate = new Date();
+
+		itemStartDate = new Date();
+
+	}
+
+	public Date getItemEndDate() {
+		return itemEndDate;
+	}
+
+	public void setItemEndDate(Date itemEndDate) {
+		this.itemEndDate = itemEndDate;
+	}
+
+	public Date getItemStartDate() {
+		return itemStartDate;
+	}
+
+	public void setItemStartDate(Date itemStartDate) {
+		this.itemStartDate = itemStartDate;
 	}
 
 	public ItemDto getItemDto() {
@@ -131,7 +154,7 @@ public class Items implements Serializable {
 
 		if (itemPurpose.toLowerCase().equals(ItemPurpose.SELL.getValue())) {
 
-			items = iItemService.getItemsByUserId(userLogin.getId());
+			items = iItemService.getItemsByUserId(userLogin.getUser().getId());
 
 		} else if (itemPurpose.equals(ItemPurpose.BUY.getValue())) {
 
@@ -140,29 +163,53 @@ public class Items implements Serializable {
 		}
 
 	}
-	
-	public void openDialogWindow(){
-		
+
+	public void openDialogWindow() {
+
 		RequestContext.getCurrentInstance().execute("PF('newItem-dialog').show()");
+
+	}
+	
+	public void closeDialogWindow() {
+		
+		RequestContext.getCurrentInstance().execute("PF('newItem-dialog').hide()");
 		
 	}
 
 	public void createNewItem() {
 
+		System.out.println(itemStartDate + " " + itemEndDate + " " + itemDto);
+
+		itemDto.setCategory((CategoryDto) tree.getSelectedNode().getData());
+		
+		itemDto.setUser(userLogin.getUser());
+
+		iItemService.addNewItem(itemDto);
+		
+		items.add(itemDto);	
+		
+		closeDialogWindow();
+		//TODO verify date to set the status.....add path to default image
 
 	}
 
 	public String addCategoryToItem(FlowEvent event) {
 
-		category = (CategoryDto)tree.getSelectedNode().getData();
-		
+		category = (CategoryDto) tree.getSelectedNode().getData();
+
 		return category != null ? event.getNewStep() : event.getOldStep();
-		
+
 	}
 
-	public void onNodeSelect(NodeSelectEvent event) {
-		
-		System.out.println(event);
+	public void onStartDateSelect() {
+
+		itemDto.setOpeningDate(new Timestamp(itemStartDate.getTime()));
+
+	}
+
+	public void onEndDateSelect() {
+
+		itemDto.setExpiringDate(new Timestamp(itemEndDate.getTime()));
 
 	}
 
@@ -171,8 +218,13 @@ public class Items implements Serializable {
 		Object newValue = event.getNewValue();
 
 		if (newValue != null && !newValue.equals(oldValue)) {
-			System.out.println("change item");
+			
+			iItemService.addNewItem(items.get(event.getRowIndex()));
+			
 		}
+		
+		
+		//TODO edit item and call method from service
 	}
 
 }

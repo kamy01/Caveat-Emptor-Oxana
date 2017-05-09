@@ -3,7 +3,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<h:form id="items-header" class="items-header">
 		<h:panelGrid class="itemsDropDown" style="float: left;">
@@ -31,7 +32,7 @@
 
 			<p:ajax event="cellEdit" listener="#{itemsView.onCellEdit}" />
 			<p:column headerText="Name" sortBy="#{item.name}">
-				<p:cellEditor>
+				<p:cellEditor styleClass="#{(item.status eq 'open') ? 'display: none;' : 'display: block;'}">
 					<f:facet name="output">
 						<h:outputText value="#{item.name}" />
 					</f:facet>
@@ -123,7 +124,7 @@
 								<p:ajax event="expand" listener="#{treeBasicView.onNodeExpand}" />
 								<p:ajax event="collapse"
 									listener="#{treeBasicView.onNodeCollapse}" />
-								<p:ajax event="select" listener="#{itemsView.onNodeSelect}"
+								<p:ajax event="select" listener="#{treeBasicView.onNodeSelect}"
 									update=":tabView:items-content" process="@form" />
 								<p:ajax event="unselect"
 									listener="#{treeBasicView.onNodeUnselect}" />
@@ -156,9 +157,19 @@
 							<p:messages />
 							<h:panelGrid columns="2" columnClasses="label, value">
 
+								<p:outputLabel for="startDate" value="Opening Date:" />
+								<p:calendar id="startDate" value="#{itemsView.itemStartDate}"
+									pattern="yyyy-MMM-dd HH:mm:ss">
+									<p:ajax event="dateSelect"
+										listener="#{itemsView.onStartDateSelect}" />
+								</p:calendar>
+
 								<p:outputLabel for="endDate" value="Expiring Date:" />
-								<p:calendar id="endDate" value="#{itemsView.itemDto.expiringDate}"
-									showOn="button" />
+								<p:calendar id="endDate" value="#{itemsView.itemEndDate}"
+									pattern="yyyy-MMM-dd HH:mm:ss">
+									<p:ajax event="dateSelect"
+										listener="#{itemsView.onEndDateSelect}" />
+								</p:calendar>
 
 							</h:panelGrid>
 							<p:commandButton value="Submit"

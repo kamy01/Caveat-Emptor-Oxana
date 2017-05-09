@@ -3,7 +3,6 @@ package entities;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "Items.findItemByUserId", query = "SELECT item from Items item where item.userId = :userId"),})
+	@NamedQuery(name = "Items.findItemByUserId", query = "SELECT item from Items item where item.user.id = :userId"),})
 @Table(name="items")
 public class Items implements Serializable{
 
@@ -54,24 +53,14 @@ public class Items implements Serializable{
 	@Column(name = "STATUS")
 	private String status;
 	
-	@Column(name = "USER_ID")
-	private Long userId;
-	
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "category_id")
+	@ManyToOne
+	@JoinColumn(name = "CATEGORY_ID")
 	private Category category;
 	
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "user_id")
+	@ManyToOne
+	@JoinColumn(name = "USER_ID")
 	private Users user;
 	
-	
-	public Long getUserId() {
-		return userId;
-	}
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
 	public Users getUser() {
 		return user;
 	}

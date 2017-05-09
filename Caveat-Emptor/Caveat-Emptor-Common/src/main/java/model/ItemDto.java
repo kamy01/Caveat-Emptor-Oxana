@@ -19,7 +19,14 @@ public class ItemDto implements Serializable{
 	private Long BestBidValue;
 	private String status;
 	private CategoryDto category;
+	private UserDto user;
 	
+	public UserDto getUser() {
+		return user;
+	}
+	public void setUser(UserDto user) {
+		this.user = user;
+	}
 	public Long getId() {
 		return id;
 	}

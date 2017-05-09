@@ -10,4 +10,6 @@ import model.ItemDto;
 public interface IItemsService {
 
 	public List<ItemDto> getItemsByUserId(Long id);
+	
+	public void addNewItem(ItemDto item);
 }

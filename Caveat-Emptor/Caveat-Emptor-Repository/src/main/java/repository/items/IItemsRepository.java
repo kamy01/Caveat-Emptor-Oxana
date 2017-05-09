@@ -11,4 +11,5 @@ import entities.Items;
 public interface IItemsRepository {
 
 	public List<Items> findItemByUserId(EntityManager entityManager, Long id);
+	
 }

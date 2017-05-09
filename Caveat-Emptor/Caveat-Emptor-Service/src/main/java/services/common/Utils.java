@@ -3,10 +3,12 @@ package services.common;
 import java.sql.Timestamp;
 
 import entities.Category;
+import entities.Items;
 import entities.Users;
 import model.CategoryDto;
 import model.ItemDto;
 import model.UserDto;
+import repository.items.ItemStatus;
 import repository.user.AccountStatus;
 
 public class Utils {
@@ -42,6 +44,25 @@ public class Utils {
 		userDto.setStatus(AccountStatus.PENDING.getValue());
 
 		return userDto;
+	}
+	
+	public static Users createUserEntity(UserDto user){
+		
+		Users userEntity = new Users();
+		
+		if(user.getId() != null){
+			userEntity.setId(user.getId());
+		}
+		userEntity.setAdmin(false);
+		userEntity.setEmail(user.getEmail());
+		userEntity.setFirstName(user.getFirstName());
+		userEntity.setLastName(user.getLastName());
+		userEntity.setPassword(user.getPassword());
+		userEntity.setStatus(user.getStatus());
+		userEntity.setUserName(user.getUserName());
+		
+		return userEntity;
+		
 	}
 
 	public static CategoryDto createCategoryDto(Long id, String name, String description, Long parentId) {
@@ -79,7 +100,7 @@ public class Utils {
 	}
 
 	public static ItemDto createItemDto(Long id, String name, String description, String imagePath, Long initialPrice,
-			Timestamp openingDate, Timestamp expiringDate, Long bestBidValue, String status, CategoryDto category) {
+			Timestamp openingDate, Timestamp expiringDate, Long bestBidValue, String status, CategoryDto category, UserDto user) {
 
 		ItemDto itemDto = new ItemDto();
 		
@@ -93,7 +114,30 @@ public class Utils {
 		itemDto.setName(name);
 		itemDto.setOpeningDate(openingDate);
 		itemDto.setStatus(status);
+		itemDto.setUser(user);
 		
 		return itemDto;
+	}
+	
+	public static Items createItemEntity(ItemDto item){
+		
+		Items itemEntity = new Items();
+		
+		if(item.getId() != null) {
+			itemEntity.setId(item.getId());
+		}
+		itemEntity.setBestBidValue(new Long(800));
+		itemEntity.setCategory(Utils.createCategoryEntity(item.getCategory()));
+		itemEntity.setDescription(item.getDescription());
+		itemEntity.setExpiringDate(item.getExpiringDate());
+		itemEntity.setImagePath(null);
+		itemEntity.setInitialPrice(item.getInitialPrice());
+		itemEntity.setName(item.getName());
+		itemEntity.setOpeningDate(item.getOpeningDate());
+		itemEntity.setStatus(ItemStatus.OPEN.getValue());
+		itemEntity.setUser(Utils.createUserEntity(item.getUser()));
+		
+		return itemEntity;
+		
 	}
 }
