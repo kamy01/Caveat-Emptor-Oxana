@@ -545,18 +545,28 @@ a {
 	width: auto !important;
 	height: auto !important;
 }
-.itemsDropDown tr{
+
+.itemsDropDown tr {
 	float: left;
 }
-.ui-selectonemenu-panel .ui-selectonemenu-list{
+
+.ui-selectonemenu-panel .ui-selectonemenu-list {
 	background-color: white;
 }
+
 .ui-selectonemenu-panel .ui-selectonemenu-list li:hover,
-.ui-selectonemenu-panel .ui-selectonemenu-list li.ui-state-highlight{
+	.ui-selectonemenu-panel .ui-selectonemenu-list li.ui-state-highlight {
 	background-color: #474e5d;
 	color: white;
 }
-.ui-dialog .ui-panel-content .ui-tree{
+
+.ui-dialog .ui-panel-content .ui-tree {
 	margin-top: 0 !important;
 	margin-left: 0 !important;
+}
+
+.tabView .ui-tabs-panel .ui-dialog td {
+	position: relative !important;
+	width: auto !important;
+	height: auto !important;
 }

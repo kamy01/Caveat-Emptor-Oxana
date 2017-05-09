@@ -74,7 +74,7 @@
 						onsuccess="PF('dlg2').hide(); return false;"
 						action="#{content.findTreeCategory(item)}" process="@this" />
 					<h:panelGrid columns="1">
-						<h:outputText value="description" />
+						<h:outputText value="#{item.description}" />
 					</h:panelGrid>
 				</ui:repeat>
 			</h:panelGroup>
