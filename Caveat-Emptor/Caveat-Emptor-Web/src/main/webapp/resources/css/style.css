@@ -521,7 +521,7 @@ a {
 }
 
 .ui-widget-content .ui-datatable .ui-sortable-column-icon.ui-icon {
-	background-image: url(../images/arrow-216-16.png) !important;
+	background-image: url(../images/arrow-204-16.png) !important;
 	width: 16px;
 	height: 16px;
 }
@@ -660,7 +660,7 @@ a {
 
 .ui-selectonemenu {
 	padding-right: 0 !important;
-	width: 200px !important;
+	width: 180px !important;
 }
 
 .ui-icon.ui-icon-triangle-1-s.ui-c {
@@ -682,11 +682,24 @@ a {
 	padding: 0.6em 5em;
 }
 
-.ui-inputfield {
+.ui-selectonemenu-label.ui-inputfield {
 	padding: 6px !important;
 }
 
 .editItem-form .ui-tree {
 	margin-top: 0 !important;
 	margin-bottom: 2% !important;
+}
+.ui-datatable .ui-selectonemenu .ui-selectonemenu-label{
+	color: #2d3544;
+	background-color: #fff;
+}
+.ui-datatable .ui-icon.ui-icon-triangle-1-s.ui-c{
+	background: url(../images/arrow-204-16-red.png) 0 0 no-repeat;
+	width: 16px !important;
+	height: 16px !important;
+}
+.ui-datatable .ui-selectonemenu-panel .ui-selectonemenu-list li:hover,
+.ui-datatable .ui-selectonemenu-item.ui-selectonemenu-list-item.ui-corner-all.ui-state-highlight{
+	background-color: #ea6153 !important;
 }
