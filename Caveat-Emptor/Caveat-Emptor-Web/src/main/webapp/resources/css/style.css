@@ -380,7 +380,7 @@ a {
 #search {
 	position: relative;
 	float: left;
-	margin-right: 31%;
+	margin-right: 23%;
 }
 
 #search input[type="text"] {
@@ -483,8 +483,8 @@ a {
 	border: none !important;
 }
 
-.ui-datatable-data td:nth-child(2),
-.tabView .ui-tabs-panel .ui-dialog td:nth-child(2)  {
+.ui-datatable-data td:nth-child(2), .tabView .ui-tabs-panel .ui-dialog td:nth-child(2)
+	{
 	display: block !important;
 }
 
@@ -528,17 +528,15 @@ a {
 
 .items-header {
 	position: absolute;
-	width: 60%;
+	width: 100%;
 	height: 10%;
-	left: 20%;
 }
 
 .items-content {
 	position: absolute;
-	width: 60%;
+	width: 100%;
 	height: 80%;
 	top: 10%;
-	left: 20%;
 }
 
 .itemsDropDown td {
@@ -571,4 +569,124 @@ a {
 	width: auto !important;
 	height: auto !important;
 	display: block !important;
+}
+
+.abandon_img {
+	background: white url('../images/cancel.png') no-repeat;
+	width: 16px;
+	height: 16px;
+	padding: 0 20px;
+}
+
+.edit_img {
+	background: white url('../images/pen.png') no-repeat;
+	width: 16px;
+	height: 16px;
+	padding: 0 20px;
+}
+
+.close_img {
+	background: white url('../images/dialog_close.png') no-repeat;
+	width: 16px;
+	height: 16px;
+	padding: 0 20px;
+}
+
+.save_img {
+	background: white url('../images/check.png') no-repeat;
+	width: 16px;
+	height: 16px;
+	padding: 0 20px;
+}
+
+.ui-button.abandon_img span, .ui-button.edit_img span, .ui-button.close_img span,
+	.ui-button.save_img span {
+	display: none;
+}
+
+.ui-widget-content.ui-datatable-odd {
+	background-color: #f4f4f4;
+}
+
+.ui-widget-content.ui-datatable-odd .ui-button {
+	background-color: #f4f4f4;
+}
+
+.tabView .ui-datatable td:LAST-CHILD {
+	text-align: left;
+}
+
+#ui-datepicker-div {
+	background-color: #f4f4f4 !important;
+}
+
+.ui_tpicker_second, .ui_tpicker_minute, .ui_tpicker_hour {
+	position: relative;
+	text-align: left;
+	background: #838688;
+	border: 0;
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) inset;
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) inset;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) inset;
+}
+
+.ui-slider .ui-slider-handle {
+	position: absolute;
+	z-index: 2;
+	width: 16px !important;
+	height: 16px !important;
+	cursor: default;
+	background: url(../images/circle_grey.png) 0 0 no-repeat;
+	outline: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	border: 0;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	background-color: #2d3544;
+	color: #fff;
+	font-size: inherit;
+	padding: -0.5em;
+	padding-right: 2.5em;
+	border: 0;
+	margin: 0;
+	border-radius: 3px;
+	text-indent: 0.01px;
+	text-overflow: '';
+	-webkit-appearance: button;
+}
+
+.ui-selectonemenu {
+	padding-right: 0 !important;
+	width: 200px !important;
+}
+
+.ui-icon.ui-icon-triangle-1-s.ui-c {
+	background: url(../images/arrow-204-16.png) 0 0 no-repeat;
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger {
+	padding: 0 !important;
+	width: 25px;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
+	margin-top: 7px;
+}
+
+.ui-button-text-only .ui-button-text {
+	padding: 0.6em 5em;
+}
+
+.ui-inputfield {
+	padding: 6px !important;
+}
+
+.editItem-form .ui-tree {
+	margin-top: 0 !important;
+	margin-bottom: 2% !important;
 }

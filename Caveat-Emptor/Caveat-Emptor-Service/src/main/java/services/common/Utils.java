@@ -8,7 +8,6 @@ import entities.Users;
 import model.CategoryDto;
 import model.ItemDto;
 import model.UserDto;
-import repository.items.ItemStatus;
 import repository.user.AccountStatus;
 
 public class Utils {
@@ -126,7 +125,7 @@ public class Utils {
 		if(item.getId() != null) {
 			itemEntity.setId(item.getId());
 		}
-		itemEntity.setBestBidValue(new Long(800));
+		itemEntity.setBestBidValue(item.getBestBidValue());
 		itemEntity.setCategory(Utils.createCategoryEntity(item.getCategory()));
 		itemEntity.setDescription(item.getDescription());
 		itemEntity.setExpiringDate(item.getExpiringDate());
@@ -134,7 +133,7 @@ public class Utils {
 		itemEntity.setInitialPrice(item.getInitialPrice());
 		itemEntity.setName(item.getName());
 		itemEntity.setOpeningDate(item.getOpeningDate());
-		itemEntity.setStatus(ItemStatus.OPEN.getValue());
+		itemEntity.setStatus(item.getStatus());
 		itemEntity.setUser(Utils.createUserEntity(item.getUser()));
 		
 		return itemEntity;

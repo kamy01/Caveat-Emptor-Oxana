@@ -2,6 +2,7 @@ package beans;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,19 +12,20 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
-import org.primefaces.event.FlowEvent;
 
 import FacesMessages.MyFacesMessage;
 import common.ItemPurpose;
 import constants.Constant;
 import model.CategoryDto;
 import model.ItemDto;
+import repository.items.ItemStatus;
 import services.items.IItemsService;
 
 @ManagedBean(name = "itemsView")
@@ -42,12 +44,17 @@ public class Items implements Serializable {
 	private Tree tree;
 
 	private List<ItemDto> items;
+
 	private String itemPurpose;
 	private Map<String, String> dropDownItems;
-	private CategoryDto category;
 	private ItemDto itemDto;
 	private Date itemEndDate;
 	private Date itemStartDate;
+	private String hideCellEdit;
+	private boolean skipItemOpeningDate;
+	private boolean skip;
+	private boolean editTableRow;
+	private Long currentRowIndex;
 
 	@PostConstruct
 	public void init() {
@@ -68,6 +75,48 @@ public class Items implements Serializable {
 
 		itemStartDate = new Date();
 
+		hideCellEdit = ItemStatus.NOT_OPEN.getValue();
+
+	}
+
+	public Long getCurrentRowIndex() {
+		return currentRowIndex;
+	}
+
+	public void setCurrentRowIndex(Long currentRowIndex) {
+		this.currentRowIndex = currentRowIndex;
+	}
+
+	public boolean isEditTableRow() {
+		return editTableRow;
+	}
+
+	public void setEditTableRow(boolean editTableRow) {
+		this.editTableRow = editTableRow;
+	}
+
+	public boolean isSkip() {
+		return skip;
+	}
+
+	public void setSkip(boolean skip) {
+		this.skip = skip;
+	}
+
+	public boolean getSkipItemOpeningDate() {
+		return skipItemOpeningDate;
+	}
+
+	public void setSkipItemOpeningDate(boolean skipItemOpeningDate) {
+		this.skipItemOpeningDate = skipItemOpeningDate;
+	}
+
+	public String getHideCellEdit() {
+		return hideCellEdit;
+	}
+
+	public void setHideCellEdit(String hideCellEdit) {
+		this.hideCellEdit = hideCellEdit;
 	}
 
 	public Date getItemEndDate() {
@@ -155,76 +204,204 @@ public class Items implements Serializable {
 		if (itemPurpose.toLowerCase().equals(ItemPurpose.SELL.getValue())) {
 
 			items = iItemService.getItemsByUserId(userLogin.getUser().getId());
+			
+			for(ItemDto item: items){
+				
+				item.setAvailableStatus(populateItemsSatusList(item));
+				
+			}
 
-		} else if (itemPurpose.equals(ItemPurpose.BUY.getValue())) {
+
+		} else if (itemPurpose.toLowerCase().equals(ItemPurpose.BUY.getValue())) {
 
 			// TODO
 
 		}
 
 	}
+	
+	private List<String> populateItemsSatusList(ItemDto item){
+		
+		List<String> statusList = new ArrayList<>();
+		
+		statusList.add(item.getStatus());
+		
+		if(item.getStatus().equals(ItemStatus.NOT_OPEN.getValue())) {
+			
+			statusList.add(ItemStatus.ABANDONED.getValue());
+			
+		}
+		
+		statusList.add(ItemStatus.OPEN.getValue());
+		
+		return statusList;
+		
+	}
 
-	public void openDialogWindow() {
+	public void openDialogWindow(String id) {
 
-		RequestContext.getCurrentInstance().execute("PF('newItem-dialog').show()");
+		RequestContext.getCurrentInstance().execute("PF('" + id + "').show()");
+
+	}
+
+	public void closeDialogWindow(String id) {
+
+		RequestContext.getCurrentInstance().execute("PF('" + id + "').hide()");
 
 	}
 	
-	public void closeDialogWindow() {
+	public void openTreeToEditItemCategory(ItemDto item){
 		
-		RequestContext.getCurrentInstance().execute("PF('newItem-dialog').hide()");
+		itemDto = item;
+		
+		openDialogWindow("editItem-dialog");
+		
+	}
+	
+	public void editItem(){
+		
+		if (tree.getSelectedNode() != null) {
+
+			itemDto.setCategory((CategoryDto) tree.getSelectedNode().getData());
+
+		}
+		
+		iItemService.addNewItem(itemDto);
+		
+		closeDialogWindow("editItem-dialog");
 		
 	}
 
 	public void createNewItem() {
 
-		System.out.println(itemStartDate + " " + itemEndDate + " " + itemDto);
+		if (itemDto.getOpeningDate().after(itemDto.getExpiringDate())) {
 
-		itemDto.setCategory((CategoryDto) tree.getSelectedNode().getData());
-		
-		itemDto.setUser(userLogin.getUser());
+			MyFacesMessage.addMessage(FacesMessage.SEVERITY_ERROR, "date error",
+					"opening date bigger than expire date");
 
-		iItemService.addNewItem(itemDto);
-		
-		items.add(itemDto);	
-		
-		closeDialogWindow();
-		//TODO verify date to set the status.....add path to default image
+			// TODO remove hardcodded code
+		} else {
+
+			if (tree.getSelectedNode() != null) {
+
+				itemDto.setCategory((CategoryDto) tree.getSelectedNode().getData());
+
+			}
+
+			itemDto.setUser(userLogin.getUser());
+
+			itemDto.setStatus(setItemStatus());
+			
+			itemDto.setBestBidValue(new Long(800));
+
+			iItemService.addNewItem(itemDto);
+
+			items.add(itemDto);
+
+			closeDialogWindow("newItem-dialog");
+
+		}
 
 	}
 
-	public String addCategoryToItem(FlowEvent event) {
+	private String setItemStatus() {
 
-		category = (CategoryDto) tree.getSelectedNode().getData();
+		if (itemDto.getOpeningDate().after(new Timestamp(System.currentTimeMillis()))) {
 
-		return category != null ? event.getNewStep() : event.getOldStep();
+			return ItemStatus.OPEN.getValue();
 
-	}
+		}
 
-	public void onStartDateSelect() {
-
-		itemDto.setOpeningDate(new Timestamp(itemStartDate.getTime()));
+		return ItemStatus.NOT_OPEN.getValue();
 
 	}
 
-	public void onEndDateSelect() {
+	public void disableItemDate() {
 
-		itemDto.setExpiringDate(new Timestamp(itemEndDate.getTime()));
+		if (skip) {
+
+			skipItemOpeningDate = true;
+			setItemDateAsCurrentTimestamp();
+
+		} else {
+
+			skipItemOpeningDate = false;
+
+		}
+
+	}
+
+	public void setItemDateAsCurrentTimestamp() {
+
+		itemDto.setOpeningDate(new Timestamp(System.currentTimeMillis()));
+		itemDto.setExpiringDate(new Timestamp(System.currentTimeMillis()));
+	}
+
+	public void onStartDateSelect(ItemDto item) {
+
+		item.setOpeningDate(new Timestamp(itemStartDate.getTime()));
+
+	}
+
+	public void onEndDateSelect(ItemDto item) {
+
+		item.setExpiringDate(new Timestamp(itemEndDate.getTime()));
 
 	}
 
 	public void onCellEdit(CellEditEvent event) {
+
 		Object oldValue = event.getOldValue();
 		Object newValue = event.getNewValue();
 
 		if (newValue != null && !newValue.equals(oldValue)) {
 			
+			items.get(event.getRowIndex()).setAvailableStatus(populateItemsSatusList(items.get(event.getRowIndex())));
+
 			iItemService.addNewItem(items.get(event.getRowIndex()));
-			
+
 		}
+
+	}
+
+	public void abandonItem(ItemDto item) {
+
+		editTableRow = false;
+
+		item.setStatus(ItemStatus.ABANDONED.getValue());
 		
-		
-		//TODO edit item and call method from service
+		item.setAvailableStatus(populateItemsSatusList(item));
+
+		iItemService.addNewItem(item);
+
+	}
+
+	public void editItemRow(ItemDto item) {
+
+		editTableRow = true;
+
+		setCurrentRowIndex(item.getId());
+
+		item.setAvailableStatus(populateItemsSatusList(item));
+
+		itemStartDate = new Date(item.getOpeningDate().getTime());
+		itemEndDate = new Date(item.getExpiringDate().getTime());
+
+	}
+
+	public void saveEditedRow(ItemDto item) {
+
+		editTableRow = false;
+		iItemService.addNewItem(item);
+
+	}
+
+	public void onStatusChange(ItemDto item) {
+
+		editTableRow = false;
+		item.setAvailableStatus(populateItemsSatusList(item));
+		iItemService.addNewItem(item);
+
 	}
 
 }

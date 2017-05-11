@@ -3,7 +3,8 @@ package repository.items;
 public enum ItemStatus {
 	OPEN("open"),
 	ABANDONED("abandoned"),
-	CLOSED("closed");
+	CLOSED("closed"),
+	NOT_OPEN("not yet open");
 	
 	private String value;
 	

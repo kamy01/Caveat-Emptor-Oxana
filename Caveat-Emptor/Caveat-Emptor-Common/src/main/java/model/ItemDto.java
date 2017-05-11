@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 
@@ -20,7 +21,14 @@ public class ItemDto implements Serializable{
 	private String status;
 	private CategoryDto category;
 	private UserDto user;
+	private List<String> availableStatus;
 	
+	public List<String> getAvailableStatus() {
+		return availableStatus;
+	}
+	public void setAvailableStatus(List<String> availableStatus) {
+		this.availableStatus = availableStatus;
+	}
 	public UserDto getUser() {
 		return user;
 	}
