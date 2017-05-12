@@ -98,7 +98,7 @@ public class Utils {
 		return category;
 	}
 
-	public static ItemDto createItemDto(Long id, String name, String description, String imagePath, Long initialPrice,
+	public static ItemDto createItemDto(Long id, String name, String description, String imagePath, Double initialPrice,
 			Timestamp openingDate, Timestamp expiringDate, Long bestBidValue, String status, CategoryDto category, UserDto user) {
 
 		ItemDto itemDto = new ItemDto();

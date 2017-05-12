@@ -19,6 +19,7 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.FlowEvent;
 
 import FacesMessages.MyFacesMessage;
 import common.ItemPurpose;
@@ -182,6 +183,22 @@ public class Items implements Serializable {
 	public void setItems(List<ItemDto> items) {
 		this.items = items;
 	}
+	
+	public String onFlowProcess(FlowEvent event){
+		
+		if(tree.getSelectedNode() == null) {
+			
+			MyFacesMessage.addMessage(FacesMessage.SEVERITY_ERROR, "Tree error", "Please select a tree node");
+			
+			return "categories-tree";
+			
+		} else {
+			
+			return event.getNewStep();
+			
+		}
+		
+	}
 
 	public void initializeDropDown() {
 
@@ -204,13 +221,12 @@ public class Items implements Serializable {
 		if (itemPurpose.toLowerCase().equals(ItemPurpose.SELL.getValue())) {
 
 			items = iItemService.getItemsByUserId(userLogin.getUser().getId());
-			
-			for(ItemDto item: items){
-				
-				item.setAvailableStatus(populateItemsSatusList(item));
-				
-			}
 
+			for (ItemDto item : items) {
+
+				item.setAvailableStatus(populateItemsSatusList(item));
+
+			}
 
 		} else if (itemPurpose.toLowerCase().equals(ItemPurpose.BUY.getValue())) {
 
@@ -219,22 +235,29 @@ public class Items implements Serializable {
 		}
 
 	}
-	
-	private List<String> populateItemsSatusList(ItemDto item){
-		
+
+	private List<String> populateItemsSatusList(ItemDto item) {
+
 		List<String> statusList = new ArrayList<>();
-		
+
 		statusList.add(item.getStatus());
-		
-		if(item.getStatus().equals(ItemStatus.NOT_OPEN.getValue())) {
-			
-			statusList.add(ItemStatus.ABANDONED.getValue());
-			
-		}
-		
 		statusList.add(ItemStatus.OPEN.getValue());
 		
+		if (item.getStatus().equals(ItemStatus.NOT_OPEN.getValue())) {
+
+			statusList.add(ItemStatus.ABANDONED.getValue());
+
+		}
+
 		return statusList;
+
+	}
+	
+	public void openWizard(){
+		
+		tree.setSelectedNode(null);
+		
+		openDialogWindow("newItem-dialog");
 		
 	}
 
@@ -249,50 +272,34 @@ public class Items implements Serializable {
 		RequestContext.getCurrentInstance().execute("PF('" + id + "').hide()");
 
 	}
-	
-	public void openTreeToEditItemCategory(ItemDto item){
-		
+
+	public void openTreeToEditItemCategory(ItemDto item) {
+
 		itemDto = item;
-		
+
 		openDialogWindow("editItem-dialog");
-		
+
 	}
-	
-	public void editItem(){
-		
+
+	public void editItem() {
+
 		if (tree.getSelectedNode() != null) {
 
 			itemDto.setCategory((CategoryDto) tree.getSelectedNode().getData());
 
 		}
-		
+
 		iItemService.addNewItem(itemDto);
-		
+
 		closeDialogWindow("editItem-dialog");
-		
+
 	}
 
 	public void createNewItem() {
 
-		if (itemDto.getOpeningDate().after(itemDto.getExpiringDate())) {
+		if(isValidTimePeriodForNewItem()) {
 
-			MyFacesMessage.addMessage(FacesMessage.SEVERITY_ERROR, "date error",
-					"opening date bigger than expire date");
-
-			// TODO remove hardcodded code
-		} else {
-
-			if (tree.getSelectedNode() != null) {
-
-				itemDto.setCategory((CategoryDto) tree.getSelectedNode().getData());
-
-			}
-
-			itemDto.setUser(userLogin.getUser());
-
-			itemDto.setStatus(setItemStatus());
-			
-			itemDto.setBestBidValue(new Long(800));
+			completeEmptyFieldsForNewItem();
 
 			iItemService.addNewItem(itemDto);
 
@@ -302,6 +309,44 @@ public class Items implements Serializable {
 
 		}
 
+	}
+	
+	private void completeEmptyFieldsForNewItem(){
+		
+		if (tree.getSelectedNode() != null) {
+
+			itemDto.setCategory((CategoryDto) tree.getSelectedNode().getData());
+
+		}
+
+		itemDto.setUser(userLogin.getUser());
+
+		itemDto.setStatus(setItemStatus());
+
+		itemDto.setBestBidValue(new Long(800));
+		
+	}
+	
+	private boolean isValidTimePeriodForNewItem(){
+		
+		if(itemDto.getOpeningDate() == null) {
+			setItemOpenDateAsCurrentTimestamp(); 
+		}
+		
+		if(itemDto.getExpiringDate() == null) {
+			setItemEndDateAsCurrentTimestamp();
+		}
+		
+		if (itemDto.getOpeningDate().after(itemDto.getExpiringDate())) {
+
+			MyFacesMessage.addMessage(FacesMessage.SEVERITY_ERROR, "date error", "opening date bigger than expire date");
+			
+			return false;
+			
+		} 
+		
+		return true;
+		
 	}
 
 	private String setItemStatus() {
@@ -321,7 +366,8 @@ public class Items implements Serializable {
 		if (skip) {
 
 			skipItemOpeningDate = true;
-			setItemDateAsCurrentTimestamp();
+			setItemOpenDateAsCurrentTimestamp();
+			setItemEndDateAsCurrentTimestamp();
 
 		} else {
 
@@ -331,9 +377,13 @@ public class Items implements Serializable {
 
 	}
 
-	public void setItemDateAsCurrentTimestamp() {
+	public void setItemOpenDateAsCurrentTimestamp() {
 
 		itemDto.setOpeningDate(new Timestamp(System.currentTimeMillis()));
+	}
+
+	public void setItemEndDateAsCurrentTimestamp() {
+
 		itemDto.setExpiringDate(new Timestamp(System.currentTimeMillis()));
 	}
 
@@ -355,7 +405,7 @@ public class Items implements Serializable {
 		Object newValue = event.getNewValue();
 
 		if (newValue != null && !newValue.equals(oldValue)) {
-			
+
 			items.get(event.getRowIndex()).setAvailableStatus(populateItemsSatusList(items.get(event.getRowIndex())));
 
 			iItemService.addNewItem(items.get(event.getRowIndex()));
@@ -369,7 +419,7 @@ public class Items implements Serializable {
 		editTableRow = false;
 
 		item.setStatus(ItemStatus.ABANDONED.getValue());
-		
+
 		item.setAvailableStatus(populateItemsSatusList(item));
 
 		iItemService.addNewItem(item);

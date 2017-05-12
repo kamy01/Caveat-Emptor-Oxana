@@ -14,7 +14,7 @@ public class ItemDto implements Serializable{
 	private String name;
 	private String description;
 	private String imagePath;
-	private Long initialPrice;
+	private Double initialPrice;
 	private Timestamp openingDate;
 	private Timestamp expiringDate;
 	private Long BestBidValue;
@@ -59,10 +59,10 @@ public class ItemDto implements Serializable{
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
-	public Long getInitialPrice() {
+	public Double getInitialPrice() {
 		return initialPrice;
 	}
-	public void setInitialPrice(Long initialPrice) {
+	public void setInitialPrice(Double initialPrice) {
 		this.initialPrice = initialPrice;
 	}
 	public Timestamp getOpeningDate() {

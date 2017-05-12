@@ -39,7 +39,7 @@ public class Items implements Serializable{
 	private String imagePath;
 	
 	@Column(name = "INITIAL_PRICE")
-	private Long initialPrice;
+	private Double initialPrice;
 	
 	@Column(name = "OPENING_DATE")
 	private Timestamp openingDate;
@@ -91,10 +91,10 @@ public class Items implements Serializable{
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
-	public Long getInitialPrice() {
+	public Double getInitialPrice() {
 		return initialPrice;
 	}
-	public void setInitialPrice(Long initialPrice) {
+	public void setInitialPrice(Double initialPrice) {
 		this.initialPrice = initialPrice;
 	}
 	public Timestamp getOpeningDate() {

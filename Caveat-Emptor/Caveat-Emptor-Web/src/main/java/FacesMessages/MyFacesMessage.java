@@ -14,7 +14,7 @@ public class MyFacesMessage {
 		
 		FacesContext context = FacesContext.getCurrentInstance();
 		
-		context.addMessage(null,
+		context.addMessage("growl",
 				new FacesMessage(severity, summary, detail));
 		
 	}

@@ -21,8 +21,8 @@
 		</h:panelGrid>
 		<p:commandButton value="Create New Item" class="button"
 			style="float: right;">
-			<p:ajax listener="#{itemsView.openDialogWindow('newItem-dialog')}"
-				event="click" update="tabView:newItem-form" process="@this" />
+			<p:ajax listener="#{itemsView.openWizard()}" event="click"
+				update="tabView:newItem-form" process="@this" />
 		</p:commandButton>
 	</h:form>
 	<h:form id="items-content" class="items-content">
@@ -190,11 +190,11 @@
 		</p:dataTable>
 	</h:form>
 	<h:form id="newItem-form">
+	<p:growl id="growl" showDetail="true" sticky="true" />
 		<p:dialog widgetVar="newItem-dialog" modal="true" showEffect="fade"
 			hideEffect="fade">
-
 			<h:panelGroup id="dialog-content">
-				<p:wizard>
+				<p:wizard flowListener="#{itemsView.onFlowProcess}" update="tabView:newItem-form:growl">
 					<p:tab id="categories-tree" title="Categories">
 						<p:panel header="Select category">
 							<p:tree value="#{treeBasicView.root}" var="node"
@@ -220,13 +220,17 @@
 							<h:panelGrid columns="2" columnClasses="label, value">
 
 								<h:outputText value="Name: " />
-								<h:inputText value="#{itemsView.itemDto.name}" />
+								<h:inputText value="#{itemsView.itemDto.name}" required="true" />
 
 								<h:outputText value="Description: " />
-								<h:inputText value="#{itemsView.itemDto.description}" />
+								<h:inputText value="#{itemsView.itemDto.description}"
+									required="true" />
 
 								<h:outputText value="Initial Price " />
-								<h:inputText value="#{itemsView.itemDto.initialPrice}" />
+								<p:inputText value="#{itemsView.itemDto.initialPrice}"
+									required="true">
+									<f:validateDoubleRange minimum="0.0" />
+								</p:inputText>
 
 							</h:panelGrid>
 						</p:panel>
