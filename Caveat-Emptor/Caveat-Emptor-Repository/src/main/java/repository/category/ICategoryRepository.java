@@ -11,5 +11,6 @@ import entities.Category;
 public interface ICategoryRepository {
 
 	public List<Category> getAllCAtegories(EntityManager entityManager);
+	public Category getLastAddedCategory(EntityManager entityManager);
 	
 }

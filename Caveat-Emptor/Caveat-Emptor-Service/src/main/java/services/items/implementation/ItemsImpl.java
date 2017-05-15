@@ -11,8 +11,8 @@ import javax.persistence.PersistenceContext;
 import entities.Items;
 import model.ItemDto;
 import repository.items.IItemsRepository;
-import services.common.Utils;
 import services.items.IItemsService;
+import services.mapper.DtoEntityMapper;
 
 @Stateless
 public class ItemsImpl implements IItemsService {
@@ -31,10 +31,10 @@ public class ItemsImpl implements IItemsService {
 
 		for (Items item : items) {
 
-			itemsDto.add(Utils.createItemDto(item.getId(), item.getName(), item.getDescription(), item.getImagePath(),
+			itemsDto.add(DtoEntityMapper.createItemDto(item.getId(), item.getName(), item.getDescription(), item.getImagePath(),
 					item.getInitialPrice(), item.getOpeningDate(), item.getExpiringDate(), item.getBestBidValue(),
-					item.getStatus(), Utils.createCategoryDto(item.getCategory().getId(), item.getCategory().getName(),
-							item.getCategory().getDescription(), item.getCategory().getParentId()),  Utils.createUserDto(item.getUser())));
+					item.getStatus(), DtoEntityMapper.createCategoryDto(item.getCategory().getId(), item.getCategory().getName(),
+							item.getCategory().getDescription(), item.getCategory().getParentId()),  DtoEntityMapper.createUserDto(item.getUser())));
 
 		}
 
@@ -43,7 +43,7 @@ public class ItemsImpl implements IItemsService {
 	
 	public void addNewItem(ItemDto item){
 		
-		Items newItem = Utils.createItemEntity(item);
+		Items newItem = DtoEntityMapper.createItemEntity(item);
 		
 		if(newItem != null){
 			

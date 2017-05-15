@@ -8,10 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
-import constants.Constant;
 import entities.Register;
 import entities.Users;
-import exception.AccountException;
+import exception.CaveatEmptorException;
 import model.UserDto;
 import repository.user.IUserRepository;
 import services.user.IRegisterService;
@@ -25,8 +24,10 @@ public class RegisterServiceImpl implements IRegisterService {
 
 	@EJB
 	IUserRepository iUserRepository;
+	
+	public static final long HOUR = 3600*1000;
 
-	public void registerNewUser(UserDto userDto, String key) throws AccountException {
+	public void registerNewUser(UserDto userDto, String key) throws CaveatEmptorException {
 
 		Users user = populateUserObject(userDto);
 		Register register = new Register();
@@ -41,13 +42,13 @@ public class RegisterServiceImpl implements IRegisterService {
 			
 		} catch (PersistenceException e) {
 			
-			throw new AccountException();
+			throw new CaveatEmptorException();
 			
 		}
 
 	}
 
-	public Register findUserByKey(String key) throws AccountException {
+	public Register findUserByKey(String key) throws CaveatEmptorException {
 
 		return iUserRepository.findUserByKeyValue(key, entityManager);
 
@@ -76,7 +77,7 @@ public class RegisterServiceImpl implements IRegisterService {
 
 	}
 
-	public void activateAccount(String key) throws AccountException {
+	public void activateAccount(String key) throws CaveatEmptorException {
 
 		Register register = findUserByKey(key);
 
@@ -92,7 +93,7 @@ public class RegisterServiceImpl implements IRegisterService {
 
 	private Timestamp getCurrentDatePlusOneDay() {
 
-		return new Timestamp(System.currentTimeMillis() + 24 * Constant.HOUR);
+		return new Timestamp(System.currentTimeMillis() + 24 * HOUR);
 
 	}
 

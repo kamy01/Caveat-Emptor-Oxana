@@ -6,7 +6,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 
-import constants.Constant;
+import constants.AccountConstants;
 
 public class MyFacesMessage {
 	
@@ -37,7 +37,7 @@ public class MyFacesMessage {
 			
 		} catch (IOException e) {
 			
-			addMessage(FacesMessage.SEVERITY_ERROR, Constant.LOGIN_ERROR, Constant.NO_SUCH_USER);
+			addMessage(FacesMessage.SEVERITY_ERROR, AccountConstants.ERROR.getValue(), AccountConstants.NO_SUCH_USER.getValue());
 			
 		}
 		

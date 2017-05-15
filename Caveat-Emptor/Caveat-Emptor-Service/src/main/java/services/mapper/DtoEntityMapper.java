@@ -1,4 +1,4 @@
-package services.common;
+package services.mapper;
 
 import java.sql.Timestamp;
 
@@ -10,7 +10,7 @@ import model.ItemDto;
 import model.UserDto;
 import repository.user.AccountStatus;
 
-public class Utils {
+public class DtoEntityMapper {
 
 	public static UserDto createUserDto(Users user) {
 
@@ -126,7 +126,7 @@ public class Utils {
 			itemEntity.setId(item.getId());
 		}
 		itemEntity.setBestBidValue(item.getBestBidValue());
-		itemEntity.setCategory(Utils.createCategoryEntity(item.getCategory()));
+		itemEntity.setCategory(DtoEntityMapper.createCategoryEntity(item.getCategory()));
 		itemEntity.setDescription(item.getDescription());
 		itemEntity.setExpiringDate(item.getExpiringDate());
 		itemEntity.setImagePath(null);
@@ -134,7 +134,7 @@ public class Utils {
 		itemEntity.setName(item.getName());
 		itemEntity.setOpeningDate(item.getOpeningDate());
 		itemEntity.setStatus(item.getStatus());
-		itemEntity.setUser(Utils.createUserEntity(item.getUser()));
+		itemEntity.setUser(DtoEntityMapper.createUserEntity(item.getUser()));
 		
 		return itemEntity;
 		

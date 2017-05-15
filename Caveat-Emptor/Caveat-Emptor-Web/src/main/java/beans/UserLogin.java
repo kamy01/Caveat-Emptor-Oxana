@@ -9,8 +9,9 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 
 import FacesMessages.MyFacesMessage;
-import constants.Constant;
-import exception.AccountException;
+import constants.AccountConstants;
+import constants.RedirectPages;
+import exception.CaveatEmptorException;
 import model.UserDto;
 import repository.user.AccountStatus;
 import services.user.IUserService;
@@ -74,25 +75,25 @@ public class UserLogin implements Serializable {
 
 			if (user != null && !isAccountConfirmed(user)) {
 
-				return "pages/" + Constant.REGISTERED_SUCCESS_PAGE + "?faces-redirect=true";
+				return "pages/" + RedirectPages.REGISTER_SUCCESS_PAGE.getValue() + "?faces-redirect=true";
 
 			} else if (user != null && password.equals(user.getPassword())) {
 				
-				return Constant.CAVEAT_EMPTOR_PAGE + "?faces-redirect=true";
+				return RedirectPages.CONTENT_PAGE.getValue() + "?faces-redirect=true";
 
 			} else {
 				
-				MyFacesMessage.addExternalMessage(FacesMessage.SEVERITY_WARN, Constant.LOGIN_ERROR, Constant.INVALID_CREDENTIALS);
+				MyFacesMessage.addExternalMessage(FacesMessage.SEVERITY_WARN, AccountConstants.ERROR.getValue(), AccountConstants.INVALID_CREDENTIALS.getValue());
 
-				return Constant.HOME_PAGE + "?faces-redirect=true";
+				return RedirectPages.LOGIN_PAGE.getValue() + "?faces-redirect=true";
 				
 			}
 
-		} catch (AccountException e) {
+		} catch (CaveatEmptorException e) {
 
-			MyFacesMessage.addExternalMessage(FacesMessage.SEVERITY_WARN, Constant.LOGIN_ERROR, Constant.NO_SUCH_USER);
+			MyFacesMessage.addExternalMessage(FacesMessage.SEVERITY_WARN, AccountConstants.ERROR.getValue(), AccountConstants.NO_SUCH_USER.getValue());
 
-			 return Constant.HOME_PAGE + "?faces-redirect=true";
+			 return RedirectPages.LOGIN_PAGE.getValue() + "?faces-redirect=true";
 		}
 
 	} 

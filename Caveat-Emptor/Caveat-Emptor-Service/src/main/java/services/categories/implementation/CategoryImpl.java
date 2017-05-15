@@ -9,11 +9,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import entities.Category;
-import exception.AccountException;
+import exception.CaveatEmptorException;
 import model.CategoryDto;
 import repository.category.ICategoryRepository;
 import services.categories.ICategory;
-import services.common.Utils;
+import services.mapper.DtoEntityMapper;
 
 @Stateless
 public class CategoryImpl implements ICategory {
@@ -24,7 +24,7 @@ public class CategoryImpl implements ICategory {
 	@EJB
 	ICategoryRepository iCategory;
 
-	public List<CategoryDto> getAllCAtegories() {
+	public List<CategoryDto> getAllCAtegories() throws CaveatEmptorException{
 
 		ArrayList<Category> categories = (ArrayList<Category>)iCategory.getAllCAtegories(entityManager);
 
@@ -32,7 +32,7 @@ public class CategoryImpl implements ICategory {
 
 		for (Category category : categories) {
 
-			categoriesDto.add(Utils.createCategoryDto(category.getId(), category.getName(), category.getDescription(),
+			categoriesDto.add(DtoEntityMapper.createCategoryDto(category.getId(), category.getName(), category.getDescription(),
 					category.getParentId()));
 
 		}
@@ -40,21 +40,21 @@ public class CategoryImpl implements ICategory {
 		return (List<CategoryDto>)categoriesDto;
 	}
 
-	public void addNewCategory(CategoryDto categoryDto) throws AccountException {
+	public void addNewCategory(CategoryDto categoryDto) throws CaveatEmptorException {
 
-		Category category = Utils.createCategoryEntity(categoryDto);
+		Category category = DtoEntityMapper.createCategoryEntity(categoryDto);
 
 		entityManager.persist(category);
 
 	}
 
-	public void removeCategory(CategoryDto parent, List<CategoryDto> children) throws AccountException {
+	public void removeCategory(CategoryDto parent, List<CategoryDto> children) throws CaveatEmptorException {
 
 		List<Category> categories = changeCategoryDtoToCategory(children);
 
 		updateParentIdForChildren(categories, parent.getParentId());
 
-		removeCategory(Utils.createCategoryEntity(parent));
+		removeCategory(DtoEntityMapper.createCategoryEntity(parent));
 
 	}
 
@@ -64,7 +64,7 @@ public class CategoryImpl implements ICategory {
 
 		for (CategoryDto categoryDto : categoriesDto) {
 
-			categories.add(Utils.createCategoryEntity(categoryDto));
+			categories.add(DtoEntityMapper.createCategoryEntity(categoryDto));
 
 		}
 
@@ -93,6 +93,15 @@ public class CategoryImpl implements ICategory {
 
 		}
 
+	}
+
+	public CategoryDto getLastAddedCategory() throws CaveatEmptorException {
+		
+		Category category = iCategory.getLastAddedCategory(entityManager);
+
+		 return DtoEntityMapper.createCategoryDto(category.getId(), category.getName(), category.getDescription(),
+					category.getParentId());
+		
 	}
 
 }

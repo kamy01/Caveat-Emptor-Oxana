@@ -28,7 +28,9 @@
 	<h:form id="items-content" class="items-content">
 		<p:dataTable var="item" value="#{itemsView.items}"
 			style="margin-bottom:40px" widgetVar="itemsList" editable="true"
-			rowIndexVar="rowIndex" editMode="cell">
+			rowIndexVar="rowIndex" editMode="cell" rows="10" paginator="true"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="10, 15, 20, 25">
 
 			<p:ajax event="cellEdit" listener="#{itemsView.onCellEdit}" />
 			<p:column headerText="Name" sortBy="#{item.name}">
@@ -190,23 +192,19 @@
 		</p:dataTable>
 	</h:form>
 	<h:form id="newItem-form">
-	<p:growl id="growl" showDetail="true" sticky="true" />
+		<p:growl id="growl" showDetail="true" sticky="true" />
 		<p:dialog widgetVar="newItem-dialog" modal="true" showEffect="fade"
 			hideEffect="fade">
 			<h:panelGroup id="dialog-content">
-				<p:wizard flowListener="#{itemsView.onFlowProcess}" update="tabView:newItem-form:growl">
+				<p:wizard flowListener="#{itemsView.onFlowProcess}"
+					update="tabView:newItem-form:growl">
 					<p:tab id="categories-tree" title="Categories">
 						<p:panel header="Select category">
 							<p:tree value="#{treeBasicView.root}" var="node"
 								selectionMode="single" selection="#{treeBasicView.selectedNode}"
 								id="tree">
-								<p:ajax event="expand" listener="#{treeBasicView.onNodeExpand}" />
-								<p:ajax event="collapse"
-									listener="#{treeBasicView.onNodeCollapse}" />
 								<p:ajax event="select" listener="#{treeBasicView.onNodeSelect}"
 									update=":tabView:items-content" process="@form" />
-								<p:ajax event="unselect"
-									listener="#{treeBasicView.onNodeUnselect}" />
 								<p:treeNode>
 									<h:outputText value="#{node.getName()}" />
 								</p:treeNode>
@@ -277,11 +275,8 @@
 			<p:tree value="#{treeBasicView.root}" var="node"
 				selectionMode="single" selection="#{treeBasicView.selectedNode}"
 				id="tree">
-				<p:ajax event="expand" listener="#{treeBasicView.onNodeExpand}" />
-				<p:ajax event="collapse" listener="#{treeBasicView.onNodeCollapse}" />
 				<p:ajax event="select" listener="#{treeBasicView.onNodeSelect}"
 					update=":tabView:items-content" process="@form" />
-				<p:ajax event="unselect" listener="#{treeBasicView.onNodeUnselect}" />
 				<p:treeNode>
 					<h:outputText value="#{node.getName()}" />
 				</p:treeNode>

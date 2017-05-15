@@ -10,17 +10,18 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.MenuModel;
 
 import FacesMessages.MyFacesMessage;
-import constants.Constant;
-import exception.AccountException;
+import constants.CategoryConstants;
+import exception.CaveatEmptorException;
 import model.CategoryDto;
 import services.categories.ICategory;
-import services.common.Utils;
+import services.mapper.DtoEntityMapper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -176,39 +177,53 @@ public class Content implements Serializable {
 
 			}
 
-			CategoryDto newCategory = Utils.createCategoryDto(null, name, description, categoryDto.getId());
+			CategoryDto newCategory = DtoEntityMapper.createCategoryDto(null, name, description, categoryDto.getId());
 
 			try {
 
 				iCategory.addNewCategory(newCategory);
-
-				tree.initializeTree();
+				addNewCategoryAsChildToTree(newCategory);
 				
-				//TODO (expand tree when add new category)
-/*				TreeNode thChild = new DefaultTreeNode(newCategory, tree.getSelectedNode());
-
-				thChild.setParent(tree.getSelectedNode());
-
-				resetContentFields();
-				
-				setSelectedNode(thChild);
-				expandParent(thChild);
-				resetContentFields();
-				initializeContextFields(thChild);*/
-
-			} catch (AccountException e) {
-
-				System.out.println("persistence error");
-
+			} catch (Exception e) {
+				MyFacesMessage.addMessage(FacesMessage.SEVERITY_ERROR, CategoryConstants.ERROR.getValue(), CategoryConstants.ERROR_UPDATE_TREE.getValue());
 			}
 
 		} else {
 			
-			MyFacesMessage.addMessage(FacesMessage.SEVERITY_WARN, Constant.CATEGORY_WARN,
-					Constant.ADD_FIELD_EMPTY);
+			MyFacesMessage.addMessage(FacesMessage.SEVERITY_WARN, CategoryConstants.WARNING.getValue(),
+					CategoryConstants.VALIDATION_EMPTY_FIELDS.getValue());
 			
 		}
 
+	}
+	
+	private void addNewCategoryAsChildToTree(CategoryDto newCategory){
+		
+		try{
+			
+			newCategory = iCategory.getLastAddedCategory();
+
+			TreeNode thChild = new DefaultTreeNode(newCategory, tree.getSelectedNode());
+
+			thChild.setParent(tree.getSelectedNode());
+			
+			setTreeNodeAsSelected(thChild);
+
+		} catch (CaveatEmptorException e) {
+
+			MyFacesMessage.addMessage(FacesMessage.SEVERITY_ERROR, CategoryConstants.ERROR.getValue(), CategoryConstants.ERROR_UPDATE_TREE.getValue());
+
+		}
+		
+	}
+	
+	private void setTreeNodeAsSelected( TreeNode node){
+		
+		setSelectedNode(node);
+		expandParent(node);
+		resetContentFields();
+		initializeContentFields(node);
+		
 	}
 
 	public void removeCategory() {
@@ -223,28 +238,24 @@ public class Content implements Serializable {
 
 				iCategory.removeCategory(parentNode, children);
 
-				//tree.initializeTree();
 				TreeNode parent = tree.getSelectedNode().getParent();
 				
 				parent.getChildren().remove(tree.getSelectedNode());
 
-				resetContentFields();
+				setTreeNodeAsSelected(parent);
 				
-				setSelectedNode(parent);
-				expandParent(parent);
-				resetContentFields();
-				initializeContextFields(parent);
-
 			} else {
 
-				MyFacesMessage.addMessage(FacesMessage.SEVERITY_WARN, Constant.CATEGORY_WARN,
-						Constant.DELETE_NO_CATEGORY);
+				MyFacesMessage.addMessage(FacesMessage.SEVERITY_WARN, CategoryConstants.ERROR.getValue(),
+						CategoryConstants.ERROR_NO_NODE_SELECTED_TO_DELETE.getValue());
+				
 
 			}
 
-		} catch (AccountException e) {
+		} catch (CaveatEmptorException e) {
 
-			System.out.println("persistence error");
+			MyFacesMessage.addMessage(FacesMessage.SEVERITY_WARN, CategoryConstants.ERROR.getValue(),
+					CategoryConstants.ERROR_REMOVE_ITEM.getValue());
 
 		}
 	}
@@ -277,11 +288,11 @@ public class Content implements Serializable {
 		
 		initializeBreadcrumb();
 
-		initializeContextFields(event.getTreeNode());
+		initializeContentFields(event.getTreeNode());
 		
 	}
 
-	private void initializeContextFields(TreeNode node) {
+	private void initializeContentFields(TreeNode node) {
 
 		this.name = ((CategoryDto) node.getData()).getName();
 
@@ -339,10 +350,7 @@ public class Content implements Serializable {
 
 				if (((CategoryDto) child.getData()).getId() == idToSelect) {
 
-					setSelectedNode(child);
-					expandParent(child);
-					resetContentFields();
-					initializeContextFields(child);
+					setTreeNodeAsSelected(child);
 
 					break;
 
@@ -376,10 +384,6 @@ public class Content implements Serializable {
 			child.getParent().setExpanded(true);
 			expandParent(child.getParent());
 		}
-	}
-	
-	public void navigateInBreadcrumb(){
-		System.out.println("in method");
 	}
 
 }

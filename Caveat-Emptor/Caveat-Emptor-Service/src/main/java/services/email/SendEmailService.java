@@ -13,108 +13,77 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import constants.Constant;
+import constants.EmailConstants;
+import exception.CaveatEmptorException;
 import model.UserDto;
 
 public class SendEmailService {
 
-	public static String sendEmail(UserDto user) {
-
-		Properties properties = getProperties();
-
-		Session session = createSession(properties);
+	public static String sendEmail(UserDto user) throws CaveatEmptorException {
 
 		try {
+			
+			Properties properties = getProperties();
+
+			Session session = createSession(properties);
 
 			String key = UUID.randomUUID().toString();
-			
+
 			Message message = buildMessage(session, properties, user, key);
 
-			try {
-				
-				Transport.send(message);
+			Transport.send(message);
 
-				return key;
-				
-			} catch (Exception e) {
-				
-				return null;
-				
-			}
-			
-		} catch (MessagingException e) {
-			
-			e.printStackTrace();
-			
+			return key;
+
+		} catch (MessagingException | IOException e) {
+
+			throw new CaveatEmptorException();
+
 		}
-		
-		return null;
+
 	}
-	
-	private static Message buildMessage(Session session, Properties properties, UserDto user, String key) throws MessagingException{
-		
-		
-		String link = Constant.MAIL_REGISTRATION_SITE_LINK + "?scope=activation"+ "&key=" + key;
-		
+
+	private static Message buildMessage(Session session, Properties properties, UserDto user, String key)
+			throws MessagingException {
+
+		String link = EmailConstants.MAIL_REGISTRATION_SITE_LINK.getValue() + "?scope=activation" + "&key=" + key;
+
 		Message message = new MimeMessage(session);
-		
+
 		message.setFrom(new InternetAddress(properties.getProperty("username")));
 		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
 		message.setSubject("Account activation");
-		message.setText(Constant.HELLO_MSG + ", " + user.getFirstName() + " " + user.getLastName() + ","
-				+ Constant.NEW_LINE + Constant.MAIL_SUBJECT + Constant.NEW_LINE
-				+ link
-				+ Constant.NEW_LINE + Constant.MAIL_SENDER);
-		
+		message.setText(
+				EmailConstants.MAIL_HELLO_MSG.getValue() + ", " + user.getFirstName() + " " + user.getLastName() + "," + EmailConstants.MAIL_NEW_LINE.getValue()
+						+ EmailConstants.MAIL_SUBJECT.getValue() + EmailConstants.MAIL_NEW_LINE.getValue() + link + EmailConstants.MAIL_NEW_LINE.getValue() + EmailConstants.MAIL_SENDER.getValue());
+
 		return message;
 	}
-	
-	private static Session createSession(Properties properties){
-		
+
+	private static Session createSession(Properties properties) {
+
 		return Session.getInstance(properties, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(properties.getProperty("username"),
 						properties.getProperty("password"));
 			}
 		});
-		
+
 	}
 
-	private static Properties getProperties() {
-		
+	private static Properties getProperties() throws IOException {
+
 		Properties properties = new Properties();
-		InputStream input = null;
+		String filename = "config.properties";
 
-		try {
-
-			String filename = "config.properties";
-			
-			input = SendEmailService.class.getClassLoader().getResourceAsStream(filename);
+		try (InputStream input = SendEmailService.class.getClassLoader().getResourceAsStream(filename)) {
 
 			properties.load(input);
 
-		} catch (IOException ex) {
-			
-			ex.printStackTrace();
-			
-		} finally {
-			
-			if (input != null) {
-				
-				try {
-					
-					input.close();
-					
-				} catch (IOException e) {
-					
-					e.printStackTrace();
-					
-				}
-			}
 		}
-		
+
 		return properties;
-		
+
 	}
 
 }

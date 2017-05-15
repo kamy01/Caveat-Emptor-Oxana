@@ -7,8 +7,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import FacesMessages.MyFacesMessage;
-import constants.Constant;
-import exception.AccountException;
+import constants.AccountConstants;
+import constants.RedirectPages;
+import exception.CaveatEmptorException;
 import model.UserDto;
 import repository.user.AccountStatus;
 import services.email.SendEmailService;
@@ -34,7 +35,6 @@ public class UserRegister {
 	public void init() {
 
 		user = new UserDto();
-		isRegisterEnabled = false;
 
 	}
 
@@ -64,14 +64,14 @@ public class UserRegister {
 
 			if (iUserService.getUserByUsername(user.getUserName()) != null) {
 
-				MyFacesMessage.addMessage(FacesMessage.SEVERITY_WARN, Constant.REGISTER_ERROR,
-						Constant.USERNAME_EXISTS);
+				MyFacesMessage.addMessage(FacesMessage.SEVERITY_WARN, AccountConstants.ERROR.getValue(),
+						AccountConstants.DUPLICATE_USERNAME.getValue());
 				
 				setRegisterEnabled(false);
 
 			}
 
-		} catch (AccountException e) {
+		} catch (CaveatEmptorException e) {
 
 			setRegisterEnabled(true);
 
@@ -84,13 +84,13 @@ public class UserRegister {
 
 			if (iUserService.getUserByEmail(user.getEmail()) != null) {
 
-				MyFacesMessage.addMessage(FacesMessage.SEVERITY_WARN, Constant.REGISTER_ERROR, Constant.EMAIL_EXISTS);
+				MyFacesMessage.addMessage(FacesMessage.SEVERITY_WARN, AccountConstants.ERROR.getValue(), AccountConstants.DUPLICATE_EMAIL.getValue());
 				
 				setRegisterEnabled(false);
 
 			}
 			
-		} catch (AccountException e) {
+		} catch (CaveatEmptorException e) {
 
 			setRegisterEnabled(true);
 
@@ -111,17 +111,19 @@ public class UserRegister {
 
 				iRegisterService.registerNewUser(user, key);
 
-				return Constant.REGISTERED_SUCCESS_PAGE + "?faces-redirect=true";
+				return RedirectPages.REGISTER_SUCCESS_PAGE.getValue() + "?faces-redirect=true";
 
 			}
 
-			MyFacesMessage.addExternalMessage(FacesMessage.SEVERITY_WARN, Constant.REGISTER_ERROR, Constant.ALREADY_REGISTERED);
+			MyFacesMessage.addExternalMessage(FacesMessage.SEVERITY_WARN, AccountConstants.ERROR.getValue(), AccountConstants.ALREADY_REGISTERED.getValue());
 			
-			return Constant.REGISER_PAGE + "?faces-redirect=true";
+			return RedirectPages.REGISTER_PAGE.getValue() + "?faces-redirect=true";
 
-		} catch (AccountException e) {
+		} catch (CaveatEmptorException e) {
+			
+			MyFacesMessage.addExternalMessage(FacesMessage.SEVERITY_WARN, AccountConstants.ERROR.getValue(), AccountConstants.REGISTER_NOT_SUCCIDED.getValue());
 
-			return Constant.REGISER_PAGE + "?faces-redirect=true";
+			return RedirectPages.REGISTER_PAGE.getValue() + "?faces-redirect=true";
 
 		}
 

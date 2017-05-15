@@ -9,11 +9,8 @@
 		<p:tree value="#{treeBasicView.root}" var="node"
 			selectionMode="single" selection="#{treeBasicView.selectedNode}"
 			id="tree">
-			<p:ajax event="expand" listener="#{treeBasicView.onNodeExpand}" />
-			<p:ajax event="collapse" listener="#{treeBasicView.onNodeCollapse}" />
 			<p:ajax event="select" listener="#{content.onNodeSelect}"
 				update=":tabView:content-form" process="@form" />
-			<p:ajax event="unselect" listener="#{treeBasicView.onNodeUnselect}" />
 			<p:treeNode>
 				<h:outputText value="#{node.getName()}" />
 			</p:treeNode>

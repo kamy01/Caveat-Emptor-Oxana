@@ -17,7 +17,8 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries({
 	@NamedQuery(name = "Category.findAllCategories", query = "SELECT categories from Category categories"),
-	@NamedQuery(name = "Category.findCategoriesByParentId", query = "SELECT categories from Category categories WHERE categories.parentId = :parentId"),})
+	@NamedQuery(name = "Category.findCategoriesByParentId", query = "SELECT categories from Category categories WHERE categories.parentId = :parentId"),
+	@NamedQuery(name = "Category.findLastAddedCategory", query = "SELECT categories FROM Category categories ORDER BY categories.id DESC"),})
 @Table(name = "categories")
 public class Category implements Serializable{
 
@@ -25,6 +26,7 @@ public class Category implements Serializable{
 
 	public static final String FIND_ALL_CATEGORIES = "Category.findAllCategories";
 	public static final String FIND_CATEGORIES_BY_PARENT_ID = "Category.findCategoriesByParentId";
+	public static final String FIND_LAST_ADDED_CATEGORY = "Category.findLastAddedCategory";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -23,7 +23,8 @@ import org.primefaces.event.FlowEvent;
 
 import FacesMessages.MyFacesMessage;
 import common.ItemPurpose;
-import constants.Constant;
+import constants.ItemConstants;
+import constants.RedirectPages;
 import model.CategoryDto;
 import model.ItemDto;
 import repository.items.ItemStatus;
@@ -62,7 +63,7 @@ public class Items implements Serializable {
 
 		if (userLogin.getUsername() == null) {
 
-			MyFacesMessage.redirectToPage("../" + Constant.HOME_PAGE + "?faces-redirect=true");
+			MyFacesMessage.redirectToPage("../" + RedirectPages.LOGIN_PAGE.getValue() + "?faces-redirect=true");
 
 		}
 
@@ -186,18 +187,7 @@ public class Items implements Serializable {
 	
 	public String onFlowProcess(FlowEvent event){
 		
-		if(tree.getSelectedNode() == null) {
-			
-			MyFacesMessage.addMessage(FacesMessage.SEVERITY_ERROR, "Tree error", "Please select a tree node");
-			
-			return "categories-tree";
-			
-		} else {
-			
-			return event.getNewStep();
-			
-		}
-		
+		return null;
 	}
 
 	public void initializeDropDown() {
@@ -208,11 +198,13 @@ public class Items implements Serializable {
 
 		itemPurpose = enumValues.get(0);
 
-		for (String value : enumValues) {
+		/*for (String value : enumValues) {
 
 			dropDownItems.put(value, value);
 
-		}
+		}*/
+		
+		dropDownItems.put(itemPurpose, itemPurpose);
 
 	}
 
@@ -257,7 +249,7 @@ public class Items implements Serializable {
 		
 		tree.setSelectedNode(null);
 		
-		openDialogWindow("newItem-dialog");
+		openDialogWindow(ItemConstants.DIALOG_WINDOW_NEW_ITEM.getValue());
 		
 	}
 
@@ -277,7 +269,7 @@ public class Items implements Serializable {
 
 		itemDto = item;
 
-		openDialogWindow("editItem-dialog");
+		openDialogWindow(ItemConstants.DIALOG_WINDOW_EDIT_ITEM.getValue());
 
 	}
 
@@ -291,7 +283,7 @@ public class Items implements Serializable {
 
 		iItemService.addNewItem(itemDto);
 
-		closeDialogWindow("editItem-dialog");
+		closeDialogWindow(ItemConstants.DIALOG_WINDOW_EDIT_ITEM.getValue());
 
 	}
 
@@ -305,7 +297,7 @@ public class Items implements Serializable {
 
 			items.add(itemDto);
 
-			closeDialogWindow("newItem-dialog");
+			closeDialogWindow(ItemConstants.DIALOG_WINDOW_NEW_ITEM.getValue());
 
 		}
 
@@ -339,7 +331,7 @@ public class Items implements Serializable {
 		
 		if (itemDto.getOpeningDate().after(itemDto.getExpiringDate())) {
 
-			MyFacesMessage.addMessage(FacesMessage.SEVERITY_ERROR, "date error", "opening date bigger than expire date");
+			MyFacesMessage.addMessage(FacesMessage.SEVERITY_ERROR, ItemConstants.DATE_ERROR.getValue() , ItemConstants.DATE_INVALID_RANGE.getValue());
 			
 			return false;
 			

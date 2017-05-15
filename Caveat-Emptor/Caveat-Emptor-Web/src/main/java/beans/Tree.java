@@ -6,16 +6,17 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import org.primefaces.event.NodeCollapseEvent;
-import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
-import org.primefaces.event.NodeUnselectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
+import FacesMessages.MyFacesMessage;
+import constants.CategoryConstants;
+import exception.CaveatEmptorException;
 import model.CategoryDto;
 import services.categories.ICategory;
 
@@ -79,12 +80,19 @@ public class Tree implements Serializable {
 	}
 
 	public void initializeTree() {
+		try {
+			
+			root = new DefaultTreeNode(new CategoryDto(), null);
+			
+			categories = iCategory.getAllCAtegories();
 
-		root = new DefaultTreeNode(new CategoryDto(), null);
-		
-		categories = iCategory.getAllCAtegories();
-
-		createRootNodes(root, null);
+			createRootNodes(root, null);
+			
+		} catch (CaveatEmptorException e) {
+			
+			MyFacesMessage.addMessage(FacesMessage.SEVERITY_ERROR, CategoryConstants.ERROR.getValue(), CategoryConstants.ERROR_RETRIEVING_DATA.getValue());
+			
+		}
 
 	}
 
@@ -119,20 +127,10 @@ public class Tree implements Serializable {
 		return (List<CategoryDto>)children;
 	}
 
-	public void onNodeExpand(NodeExpandEvent event) {
-		event.getTreeNode().toString();
-	}
-
-	public void onNodeCollapse(NodeCollapseEvent event) {
-	}
-
 	public void onNodeSelect(NodeSelectEvent event) {
 		event.getTreeNode().getData();
 		this.name = ((CategoryDto)event.getTreeNode().getData()).getName();
 		this.description = ((CategoryDto)event.getTreeNode().getData()).getDescription();
-	}
-
-	public void onNodeUnselect(NodeUnselectEvent event) {
 	}
 
 }

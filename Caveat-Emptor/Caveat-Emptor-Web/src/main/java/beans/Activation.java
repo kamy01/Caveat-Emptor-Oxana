@@ -6,7 +6,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
-import exception.AccountException;
+import exception.CaveatEmptorException;
 import services.user.IRegisterService;
 
 @ManagedBean(name = "activation")
@@ -29,7 +29,7 @@ public class Activation {
 
 			valid = true;
 			
-		} catch (AccountException e) {
+		} catch (CaveatEmptorException e) {
 
 			valid = false;
 		}

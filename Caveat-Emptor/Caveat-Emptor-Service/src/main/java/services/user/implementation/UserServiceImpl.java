@@ -6,10 +6,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import entities.Users;
-import exception.AccountException;
+import exception.CaveatEmptorException;
 import model.UserDto;
 import repository.user.IUserRepository;
-import services.common.Utils;
+import services.mapper.DtoEntityMapper;
 import services.user.IUserService;
 
 @Stateless
@@ -21,18 +21,18 @@ public class UserServiceImpl implements IUserService {
 	@EJB
 	IUserRepository iUserRepository;
 
-	public UserDto getUserByUsername(String username) throws AccountException {
+	public UserDto getUserByUsername(String username) throws CaveatEmptorException {
 
 			Users user = iUserRepository.findUserByUsername(username, entityManager);
 
-			return Utils.createUserDto(user);
+			return DtoEntityMapper.createUserDto(user);
 
 	}
 
-	public UserDto getUserByEmail(String email) throws AccountException{
+	public UserDto getUserByEmail(String email) throws CaveatEmptorException{
 
 			Users user = iUserRepository.findUserByEmail(email, entityManager);
-			return Utils.createUserDto(user);
+			return DtoEntityMapper.createUserDto(user);
 
 	}
 
