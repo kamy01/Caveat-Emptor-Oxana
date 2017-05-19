@@ -3,21 +3,138 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:p="http://primefaces.org/ui">
 
-	<!-- <h:form class="tree-form" id="tree-form">
+	<h:form class="tree-form" id="bidding-tree-form">
 		<p:tree value="#{treeBasicView.root}" var="node"
 			selectionMode="single" selection="#{treeBasicView.selectedNode}"
-			id="tree">
-			<p:ajax event="select" listener="#{content.onNodeSelect}"
-				update="" process="@form" />
+			id="tree" style="height: 50%;" class="tree">
+			<p:ajax event="select" listener="#{biddingView.onNodeSelect}"
+				update=":tabView:bidding-form tabView:category-description"
+				process="@form" />
 			<p:treeNode>
 				<h:outputText value="#{node.getName()}" />
 			</p:treeNode>
 		</p:tree>
 		<div id="delimiter"></div>
 	</h:form>
-	<h:form id="content-form">
-	</h:form> -->
+	<h:form id="bidding-form" class="bidding-form">
+		<p:dataTable var="item" value="#{biddingView.items}" rows="4"
+			paginator="true"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="4, 6, 8" rendered="#{biddingView.hideDataTable}">
+			<p:column headerText="Id">
+				<p:panel header="">
+					<p:commandLink value="#{item.name}" class="ui-panel-title">
+						<p:ajax listener="#{biddingView.openItemDetailsWindow(item)}"
+							event="click" update=":tabView:itemDetails" process="@this" />
+					</p:commandLink>
+					<h:panelGrid cellpadding="10">
+						<img src="../resources/images/h250.jpg" class="items-image" />
+						<h:outputText value="#{item.description}" />
+						<h:panelGrid class="bidding-details">
+							<h:outputText value="#{item.bestBidValue} $"
+								style="font-size: 24px; font-family: 'Roboto', sans-serif;" />
+							<h:outputFormat value="{0, date, dd-MM-yyyy}">
+								<f:param value="#{item.expiringDate}" />
+							</h:outputFormat>
+						</h:panelGrid>
+					</h:panelGrid>
+				</p:panel>
+			</p:column>
+
+		</p:dataTable>
+	</h:form>
+	<p:outputPanel id="category-description" autoUpdate="true"
+		class="category-description-bidding">
+		<p:outputLabel value="#{biddingView.descriptionCategory.name}"
+			class="category-description-label" />
+		<p:outputLabel value="#{biddingView.descriptionCategory.description}"></p:outputLabel>
+	</p:outputPanel>
+	<h:form id="itemDetails" class="itemDetails-form">
+		<p:dialog header="Item Details" widgetVar="dlg1" minHeight="40">
+			<p:panel header="">
+				<h:outputText value="#{biddingView.itemDetails.name}"
+					class="ui-panel-title" />
+				<h:panelGrid cellpadding="10">
+					<img src="../resources/images/h250.jpg" class="items-image" />
+					<h:outputText value="#{biddingView.itemDetails.description}" />
+				</h:panelGrid>
+				<h:panelGroup class="bidding-details">
+					<div>
+						<div>
+							<span>Best bid:</span>
+						</div>
+
+						<div>
+							<h:outputText value="#{biddingView.itemDetails.bestBidValue} $"
+								style="font-size: 24px; font-family: 'Roboto', sans-serif;" />
+						</div>
+
+					</div>
+					<div>
+						<div>
+							<span>Initial price:</span>
+						</div>
+
+						<div>
+							<h:outputText value="#{biddingView.itemDetails.initialPrice} $"
+								style="font-size: 24px; font-family: 'Roboto', sans-serif;" />
+						</div>
+
+					</div>
+					<div>
+						<div>
+							<span>Opening date:</span>
+						</div>
+
+						<div>
+							<h:outputFormat value="{0, date, dd-MM-yyyy}"
+								style="display: block; margin-top: 15px;">
+								<f:param value="#{biddingView.itemDetails.openingDate}" />
+							</h:outputFormat>
+						</div>
+
+					</div>
+					<div>
+						<div>
+							<span>Bid opened until:</span>
+						</div>
+
+						<div>
+							<h:outputFormat value="{0, date, dd-MM-yyyy}">
+								<f:param value="#{biddingView.itemDetails.expiringDate}" />
+							</h:outputFormat>
+						</div>
+
+					</div>
+					<div>
+						<div>
+							<span>Total bids:</span>
+						</div>
+
+						<div>
+							<h:outputText value="153"
+								style="font-size: 24px; font-family: 'Roboto', sans-serif;" />
+						</div>
+
+					</div>
+					<div>
+						<div>
+							<span>Your bid:</span>
+						</div>
+
+						<div>
+							<h:inputText value="153"
+								style="font-size: 24px; font-family: 'Roboto', sans-serif;" />
+						</div>
+					</div>
+					<div class="item-details-buttons">
+						<p:commandButton value="Submit" />
+						<p:commandButton value="Discard" />
+					</div>
+				</h:panelGroup>
+			</p:panel>
+		</p:dialog>
+	</h:form>
 </ui:composition>

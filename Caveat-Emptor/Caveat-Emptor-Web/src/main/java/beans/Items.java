@@ -16,15 +16,14 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
-import org.primefaces.event.FlowEvent;
 
 import FacesMessages.MyFacesMessage;
 import common.ItemPurpose;
 import constants.ItemConstants;
-import constants.RedirectPages;
 import model.CategoryDto;
 import model.ItemDto;
 import repository.items.ItemStatus;
@@ -39,7 +38,7 @@ public class Items implements Serializable {
 	@EJB
 	IItemsService iItemService;
 
-	@ManagedProperty("#{userLogin}")
+	@Inject
 	private UserLogin userLogin;
 
 	@ManagedProperty("#{treeBasicView}")
@@ -57,29 +56,6 @@ public class Items implements Serializable {
 	private boolean skip;
 	private boolean editTableRow;
 	private Long currentRowIndex;
-
-	@PostConstruct
-	public void init() {
-
-		if (userLogin.getUsername() == null) {
-
-			MyFacesMessage.redirectToPage("../" + RedirectPages.LOGIN_PAGE.getValue() + "?faces-redirect=true");
-
-		}
-
-		initializeDropDown();
-
-		onDropDownChange();
-
-		itemDto = new ItemDto();
-
-		itemEndDate = new Date();
-
-		itemStartDate = new Date();
-
-		hideCellEdit = ItemStatus.NOT_OPEN.getValue();
-
-	}
 
 	public Long getCurrentRowIndex() {
 		return currentRowIndex;
@@ -184,10 +160,22 @@ public class Items implements Serializable {
 	public void setItems(List<ItemDto> items) {
 		this.items = items;
 	}
-	
-	public String onFlowProcess(FlowEvent event){
-		
-		return null;
+
+	@PostConstruct
+	public void init() {
+
+		initializeDropDown();
+
+		onDropDownChange();
+
+		itemDto = new ItemDto();
+
+		itemEndDate = new Date();
+
+		itemStartDate = new Date();
+
+		hideCellEdit = ItemStatus.NOT_OPEN.getValue();
+
 	}
 
 	public void initializeDropDown() {
@@ -198,12 +186,14 @@ public class Items implements Serializable {
 
 		itemPurpose = enumValues.get(0);
 
-		/*for (String value : enumValues) {
+		/*
+		 * for (String value : enumValues) {
+		 * 
+		 * dropDownItems.put(value, value);
+		 * 
+		 * }
+		 */
 
-			dropDownItems.put(value, value);
-
-		}*/
-		
 		dropDownItems.put(itemPurpose, itemPurpose);
 
 	}
@@ -234,7 +224,7 @@ public class Items implements Serializable {
 
 		statusList.add(item.getStatus());
 		statusList.add(ItemStatus.OPEN.getValue());
-		
+
 		if (item.getStatus().equals(ItemStatus.NOT_OPEN.getValue())) {
 
 			statusList.add(ItemStatus.ABANDONED.getValue());
@@ -244,13 +234,13 @@ public class Items implements Serializable {
 		return statusList;
 
 	}
-	
-	public void openWizard(){
-		
+
+	public void openWizard() {
+
 		tree.setSelectedNode(null);
-		
+
 		openDialogWindow(ItemConstants.DIALOG_WINDOW_NEW_ITEM.getValue());
-		
+
 	}
 
 	public void openDialogWindow(String id) {
@@ -289,7 +279,7 @@ public class Items implements Serializable {
 
 	public void createNewItem() {
 
-		if(isValidTimePeriodForNewItem()) {
+		if (isValidTimePeriodForNewItem()) {
 
 			completeEmptyFieldsForNewItem();
 
@@ -302,9 +292,9 @@ public class Items implements Serializable {
 		}
 
 	}
-	
-	private void completeEmptyFieldsForNewItem(){
-		
+
+	private void completeEmptyFieldsForNewItem() {
+
 		if (tree.getSelectedNode() != null) {
 
 			itemDto.setCategory((CategoryDto) tree.getSelectedNode().getData());
@@ -316,29 +306,30 @@ public class Items implements Serializable {
 		itemDto.setStatus(setItemStatus());
 
 		itemDto.setBestBidValue(new Long(800));
-		
+
 	}
-	
-	private boolean isValidTimePeriodForNewItem(){
-		
-		if(itemDto.getOpeningDate() == null) {
-			setItemOpenDateAsCurrentTimestamp(); 
+
+	private boolean isValidTimePeriodForNewItem() {
+
+		if (itemDto.getOpeningDate() == null) {
+			setItemOpenDateAsCurrentTimestamp();
 		}
-		
-		if(itemDto.getExpiringDate() == null) {
+
+		if (itemDto.getExpiringDate() == null) {
 			setItemEndDateAsCurrentTimestamp();
 		}
-		
+
 		if (itemDto.getOpeningDate().after(itemDto.getExpiringDate())) {
 
-			MyFacesMessage.addMessage(FacesMessage.SEVERITY_ERROR, ItemConstants.DATE_ERROR.getValue() , ItemConstants.DATE_INVALID_RANGE.getValue());
-			
+			MyFacesMessage.addMessage(FacesMessage.SEVERITY_ERROR, ItemConstants.DATE_ERROR.getValue(),
+					ItemConstants.DATE_INVALID_RANGE.getValue());
+
 			return false;
-			
-		} 
-		
+
+		}
+
 		return true;
-		
+
 	}
 
 	private String setItemStatus() {

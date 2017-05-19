@@ -10,6 +10,7 @@
 		<module>Caveat-Emptor-Service</module>
 		<module>Caveat-Emptor-Common</module>
 		<module>Caveat-Emptor-Web</module>
+		<module>Caveat-Emptor-RESTWS</module>
 	</modules>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/javax/javaee-api -->

@@ -1,6 +1,8 @@
 package services.mapper;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import entities.Category;
 import entities.Items;
@@ -138,5 +140,21 @@ public class DtoEntityMapper {
 		
 		return itemEntity;
 		
+	}
+	
+	public static List<ItemDto> convertItemEntityToDto(List<Items> itemEntityList){
+		
+		List<ItemDto> dtoList = new ArrayList<ItemDto>();
+		
+		for(Items item: itemEntityList){
+			
+			dtoList.add(createItemDto(item.getId(), item.getName(), item.getDescription(), item.getImagePath(),
+					item.getInitialPrice(), item.getOpeningDate(), item.getExpiringDate(), item.getBestBidValue(),
+					item.getStatus(), DtoEntityMapper.createCategoryDto(item.getCategory().getId(), item.getCategory().getName(),
+							item.getCategory().getDescription(), item.getCategory().getParentId()),  DtoEntityMapper.createUserDto(item.getUser())));
+			
+		}
+		
+		return dtoList;
 	}
 }

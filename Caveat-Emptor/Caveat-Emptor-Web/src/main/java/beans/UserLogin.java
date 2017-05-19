@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
+import javax.inject.Named;
 
 import FacesMessages.MyFacesMessage;
 import constants.AccountConstants;
@@ -16,8 +16,8 @@ import model.UserDto;
 import repository.user.AccountStatus;
 import services.user.IUserService;
 
-@ManagedBean(name = "userLogin")
-@ApplicationScoped
+@Named
+@SessionScoped
 public class UserLogin implements Serializable {
 
 	private static final long serialVersionUID = 5443351151396868724L;
@@ -111,6 +111,12 @@ public class UserLogin implements Serializable {
 
 		}
 
+	}
+	
+	public boolean isLoggedIn(){
+		
+		return user.getId() != null ? true : false;
+		
 	}
 
 }

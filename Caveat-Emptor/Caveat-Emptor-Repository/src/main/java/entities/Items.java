@@ -16,13 +16,15 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "Items.findItemByUserId", query = "SELECT item from Items item where item.user.id = :userId"),})
+	@NamedQuery(name = "Items.findItemByUserId", query = "SELECT item from Items item where item.user.id = :userId"),
+	@NamedQuery(name = "Items.findItemsByCategoryIds", query = "SELECT item FROM Items item WHERE item.category.id IN :ids ")})
 @Table(name="items")
 public class Items implements Serializable{
 
 	private static final long serialVersionUID = 252618522771935009L;
 	
 	public static final String FIND_ITEMS_BY_USER_ID = "Items.findItemByUserId";
+	public static final String FIND_ITEMS_BY_CATEGORY_IDS = "Items.findItemsByCategoryIds";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

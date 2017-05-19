@@ -28,6 +28,7 @@ public class Category implements Serializable{
 	public static final String FIND_CATEGORIES_BY_PARENT_ID = "Category.findCategoriesByParentId";
 	public static final String FIND_LAST_ADDED_CATEGORY = "Category.findLastAddedCategory";
 	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")

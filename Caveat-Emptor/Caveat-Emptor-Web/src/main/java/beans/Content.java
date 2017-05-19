@@ -39,8 +39,6 @@ public class Content implements Serializable {
 
 	@EJB
 	ICategory iCategory;
-	
-	private String pageUrl;
 
 	private MenuModel model;
 	private DefaultMenuItem item;
@@ -55,9 +53,6 @@ public class Content implements Serializable {
 	public void init() {
 
 		initializeBreadcrumb();
-		pageUrl = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-		
-		System.out.println(pageUrl);
 
 	}
 
