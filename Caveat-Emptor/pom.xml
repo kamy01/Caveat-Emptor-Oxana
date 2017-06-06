@@ -5,6 +5,7 @@
 	<artifactId>Caveat-Emptor</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<!-- test-->
 	<modules>
 		<module>Caveat-Emptor-Repository</module>
 		<module>Caveat-Emptor-Service</module>
